@@ -64,7 +64,23 @@ return [
             'retry_after' => 90,
         ],
 
+        'ph4DBOptim' => [
+            'driver' => 'ph4DBOptim',
+            'table' => 'jobs_optim',
+            'queue' => 'default',
+            'retry_after' => 90,
+        ],
+
+        'ph4DBPess' => [
+            'driver' => 'ph4DBPess',
+            'table' => 'jobs',
+            'queue' => 'default',
+            'retry_after' => 90,
+        ],
+
     ],
+
+    'db_delete_tsx' => env('DELETE_TSX', false),
 
     /*
     |--------------------------------------------------------------------------
