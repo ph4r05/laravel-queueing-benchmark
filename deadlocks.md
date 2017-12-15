@@ -18,7 +18,7 @@ Index experimenting
 
 ```sql
 alter table laravel.jobs drop index jobs_queue_index;
-alter table jobs add index `jobs_queue_index` (`queue`); 
+alter table laravel.jobs add index `jobs_queue_index` (`queue`); 
 ```
 
 ### InnoDB transaction status
