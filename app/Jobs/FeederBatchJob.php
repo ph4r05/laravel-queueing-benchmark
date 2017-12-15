@@ -108,7 +108,10 @@ class FeederBatchJob implements ShouldQueue
         $this->queueInstance = $queueManager->connection($this->workerConnection);
         $workerQueueInstance = $this->queueInstance;
         Log::info('Worker queue: ' . $workerQueueInstance->getConnectionName()
-            . '; mark: ' . ($deleteMark ? 'Y' : 'N'));
+            . '; mark: ' . ($deleteMark ? 'Y' : 'N')
+            . '; cloneP: ' . var_export($cloneProbab, true)
+            . '; mean: ' . var_export($mean, true)
+        );
 
         // Reconfigure dotenv
         $this->reconfigureDot();
