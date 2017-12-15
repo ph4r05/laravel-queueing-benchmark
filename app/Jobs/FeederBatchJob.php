@@ -22,6 +22,12 @@ class FeederBatchJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
+     * Batch size
+     * @var
+     */
+    public $batchSize;
+
+    /**
      * Override queue connection for workers
      */
     public $conn;
@@ -97,7 +103,6 @@ class FeederBatchJob implements ShouldQueue
     public function handle(Application $app, QueueManager $queueManager)
     {
         Log::info('Main feeding job started');
-        Utils::deleteJobs();
 
         $rand = new SystemRand();
         $stddev = floatval(config('benchmark.job_stdev_time'));
@@ -105,7 +110,7 @@ class FeederBatchJob implements ShouldQueue
         $cloneProbab = floatval($this->workClone ?? config('benchmark.job_clone_probability'));
         $deleteMark = filter_var($this->delMark ?? config('benchmark.job_delete_mark'), FILTER_VALIDATE_BOOLEAN);
 
-        $batchSize = config('benchmark.job_batch_size');
+        $batchSize = intval($this->batchSize ?? config('benchmark.job_batch_size'));
         $workerQueue = config('benchmark.job_worker_queue');
         $this->workerConnection = $this->conn ?? config('benchmark.job_working_connection');
 
@@ -121,6 +126,8 @@ class FeederBatchJob implements ShouldQueue
         // Reconfigure dotenv
         $this->reconfigureDot();
         $this->reconfigure();
+
+        Utils::deleteJobs($this->optim);
         $this->restartWorkers();
 
         $startJobId = Utils::getJobId($this->optim);
@@ -155,7 +162,7 @@ class FeederBatchJob implements ShouldQueue
         $lastFetch = 0;
         while(true){
             $curTime = microtime(true);
-            if ($curTime - $lastFetch < 0.25) {
+            if ($curTime - $lastFetch < 0.5) {
                 usleep(1000);
                 continue;
             }

@@ -21,6 +21,7 @@ class FeedJobs extends Command
                                 {--cron : started by cron}
                                 {--sync : synchronous processing}
                                 {--batch : batch job pre-generation}
+                                {--batch-size= : batch size}
                                 {--conn= : Override queue connection for workers, 0=pess, 1=opt, 2=beans}
                                 {--del-tsx-fetch= : Fetch before delete}
                                 {--del-tsx-retry= : Delete retry counts}
@@ -79,6 +80,7 @@ class FeedJobs extends Command
             $job->conn = $conn;
         }
 
+        $job->batchSize = $this->option('batch-size');
         $job->delTsxFetch = $this->option('del-tsx-fetch');
         $job->delTsxRetry = $this->option('del-tsx-retry');
         $job->delMark = $this->option('del-mark');
