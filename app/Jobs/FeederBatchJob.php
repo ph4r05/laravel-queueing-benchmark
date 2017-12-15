@@ -212,13 +212,18 @@ class FeederBatchJob implements ShouldQueue
 
         } elseif (Str::contains($workerConnectionLow, ['optim'])){
             $this->queueInstance->deleteFetch = filter_var($this->delTsxFetch ?? config('benchmark.db_delete_tsx'), FILTER_VALIDATE_BOOLEAN);
-            Log::info('Optimistic queueing');
+            Log::info('Optimistic queueing '
+                . ', deleteFetch: ' . var_export($this->queueInstance->deleteFetch, true));
 
         } elseif (Str::contains($workerConnectionLow, ['pess'])) {
             $this->queueInstance->deleteFetch = filter_var($this->delTsxFetch ?? config('benchmark.db_delete_tsx'), FILTER_VALIDATE_BOOLEAN);
             $this->queueInstance->deleteMark = filter_var($this->delMark ?? config('benchmark.job_delete_mark'), FILTER_VALIDATE_BOOLEAN);
             $this->queueInstance->deleteRetry = intval($this->delTsxRetry ?? config('benchmark.db_delete_tsx_retry'));
-            Log::info('Pessimistic queueing');
+            Log::info('Pessimistic queueing '
+                . ', deleteFetch: ' . var_export($this->queueInstance->deleteFetch, true)
+                . ', deleteMark: ' . var_export($this->queueInstance->deleteMark, true)
+                . ', deleteRetry: ' . var_export($this->queueInstance->deleteRetry, true)
+            );
 
         } else {
             Log::info('Unknown queueing');
