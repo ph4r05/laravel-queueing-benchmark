@@ -8,12 +8,23 @@
 
 namespace App\Benchmark\Queue;
 
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Queue\QueueManager;
 use Illuminate\Queue\Worker;
 use Illuminate\Queue\WorkerOptions;
+use Illuminate\Support\Facades\Log;
 
 
 class Ph4Worker extends Worker
 {
+    public function __construct(QueueManager $manager, Dispatcher $events, ExceptionHandler $exceptions)
+    {
+        parent::__construct($manager, $events, $exceptions);
+        Log::info('Worker created');
+    }
+
+
     /**
      * @param WorkerOptions $options
      */
@@ -42,5 +53,19 @@ class Ph4Worker extends Worker
     {
         usleep($microseconds);
     }
+
+    /**
+     * @param string $connectionName
+     * @param \Illuminate\Contracts\Queue\Job $job
+     * @param WorkerOptions $options
+     * @throws \Throwable
+     */
+    public function process($connectionName, $job, WorkerOptions $options)
+    {
+        Log::info($job->id);
+        return parent::process($connectionName, $job, $options);
+    }
+
+
 }
 

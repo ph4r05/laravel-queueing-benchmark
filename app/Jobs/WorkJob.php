@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Benchmark\Utils;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -11,6 +12,19 @@ use Illuminate\Foundation\Bus\Dispatchable;
 class WorkJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    /**
+     * Time to spend on the task in milliseconds
+     * @var int
+     */
+    public $runningTime = 1000;
+
+    /**
+     * Probability of clonning this task - reinsert back to the queue.
+     * Simulates job insertions as well.
+     * @var int
+     */
+    public $probabilityOfClone = 0;
 
     /**
      * Create a new job instance.
@@ -29,6 +43,18 @@ class WorkJob implements ShouldQueue
      */
     public function handle()
     {
-        //
+        if ($this->runningTime > 0) {
+            usleep(max(floor($this->runningTime * 1000), 0));
+        }
+
+        // Clonning
+        if ($this->probabilityOfClone > 0 && Utils::randomFloat() <= $this->probabilityOfClone){
+            $job = new WorkJob();
+            $job->runningTime = $this->runningTime;
+            $job->probabilityOfClone = $this->probabilityOfClone;
+            $job->onConnection($this->connection)
+                ->onQueue($this->queue);
+            dispatch($job);
+        }
     }
 }

@@ -13,9 +13,11 @@ sudo apt-get update -y
 apt-cache pkgnames | grep php7.1
 
 sudo apt install php7.1 php7.1-cli php7.1-common php7.1-json php7.1-opcache \
-    php7.1-mysql php7.1-mbstring php7.1-mcrypt php7.1-zip php7.1-fpm \
-    php7.1-sqlite3 php7.1-pgsql php7.1-intl php7.1-xmlrpc php7.1-xml
+     php7.1-mysql php7.1-mbstring php7.1-mcrypt php7.1-zip php7.1-fpm \
+     php7.1-sqlite3 php7.1-pgsql php7.1-intl php7.1-xmlrpc php7.1-xml \
+     php7.1-gmp php7.1-bcmath
  
+sudo apt install php-pear git libdbd-mysql-perl libdbi-perl
 sudo apt install build-essential tcl
 sudo apt install supervisor
 sudo apt install redis-server

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Benchmark\Utils;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -31,5 +32,20 @@ class FeederJob implements ShouldQueue
     public function handle()
     {
         Log::info('Main feeding job started');
+
+        // Get number of jobs in the DB
+        $jobCount = Utils::getJobQuery()->whereNull('reserved_at')->count();
+        $feeders = config('benchmark.num_job_feeders');
+
+        for($i = 0; $i < $feeders; $i++){
+            $job = new FeederSubJob();
+            $job->feederIdx = $i;
+            $job->jobsNum = $jobCount;
+
+            $job->onConnection(config('benchmark.job_feeding_connection'))
+                ->onQueue(config('benchmark.job_sub_feeder_queue'));
+
+            dispatch($job);
+        }
     }
 }

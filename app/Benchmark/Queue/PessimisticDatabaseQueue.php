@@ -67,10 +67,6 @@ class PessimisticDatabaseQueue extends DatabaseQueue implements QueueContract
     protected function marshalJob($queue, $job)
     {
         $job = $this->markJobAsReserved($job);
-        if (empty($job)){
-            return null;
-        }
-
         return new DatabaseJob(
             $this->container, $this, $job, $this->connectionName, $queue
         );
@@ -92,11 +88,12 @@ class PessimisticDatabaseQueue extends DatabaseQueue implements QueueContract
                 if ($this->database->table($this->table)->lockForUpdate()->find($id)) {
                     $this->database->table($this->table)->where('id', $id)->delete();
                 }
-            });
+            }, 2);
 
         } else {
-
-            $this->database->table($this->table)->where('id', $id)->delete();
+            $this->database->transaction(function () use ($queue, $id) {
+                $this->database->table($this->table)->where('id', $id)->delete();
+            }, 2);
         }
     }
 

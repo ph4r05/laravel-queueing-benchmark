@@ -85,6 +85,7 @@ class OptimisticDatabaseQueue extends DatabaseQueue implements QueueContract
         // to return such job if there is one or return null if there are no jobs so worker
         // can sleep(). Thus we have to attempt to claim jobs until there are some.
         $job = null;
+        $ctr=0;
         do {
             if ($job = $this->getNextAvailableJob($queue)) {
 
@@ -92,14 +93,16 @@ class OptimisticDatabaseQueue extends DatabaseQueue implements QueueContract
                 $jobClaimed = $this->marshalJob($queue, $job);
                 if (!empty($jobClaimed)) {
                     // job was successfully claimed, return it.
+                    //if ($ctr>0)Log::info('  .. Ctr: ' . $ctr);
                     return $jobClaimed;
                 } else {
                     // Log::debug('Job preempted');
+                    $ctr+=1;
                 }
             }
 
-        } while($job);
-
+        } while($job !== null);
+        //if ($ctr>0)Log::info('  .. XCTR: ' . $ctr);
         return null;
     }
 

@@ -2,8 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Benchmark\Random\SystemRand;
+use App\Benchmark\Utils;
+use App\Jobs\FeederBatchJob;
 use App\Jobs\FeederJob;
+use App\Jobs\WorkJob;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class FeedJobs extends Command
 {
@@ -13,7 +18,9 @@ class FeedJobs extends Command
      * @var string
      */
     protected $signature = 'app:feedJobs
-                                {--sync : synchronous processing}';
+                                {--cron : started by cron}
+                                {--sync : synchronous processing}
+                                {--batch : batch job pre-generation}';
 
     /**
      * The console command description.
@@ -39,6 +46,34 @@ class FeedJobs extends Command
      */
     public function handle()
     {
+        if ($this->isBatch()){
+            $this->startBatchJob();
+        } else {
+            $this->startFeederJob();
+        }
+
+        return 0;
+    }
+
+    /**
+     * Generate batch, then kickoff.
+     */
+    protected function startBatchJob(){
+        $job = new FeederBatchJob();
+        $job->onConnection('sync')
+            ->onQueue(null);
+        dispatch($job);
+    }
+
+    /**
+     * Self feeding job
+     * More complicated logic.
+     */
+    protected function startFeederJob(){
+        if ($this->isCron() && !config('benchmark.job_feeding')){
+            return;
+        }
+
         // Start the new ssh pool check job.
         $job = new FeederJob();
 
@@ -52,7 +87,6 @@ class FeedJobs extends Command
         }
 
         dispatch($job);
-        return 0;
     }
 
     /**
@@ -60,5 +94,19 @@ class FeedJobs extends Command
      */
     protected function isSync(){
         return $this->option('sync');
+    }
+
+    /**
+     * Batch processing
+     */
+    protected function isBatch(){
+        return $this->option('batch');
+    }
+
+    /**
+     * Started by cron
+     */
+    protected function isCron(){
+        return $this->option('cron');
     }
 }

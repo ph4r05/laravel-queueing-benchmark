@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\FeedJobs;
+use App\Console\Commands\WorkCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,6 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         FeedJobs::class,
+        WorkCommand::class,
     ];
 
     /**
@@ -25,7 +27,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(FeedJobs::class)
+        $schedule->command(FeedJobs::class, ['--cron'])
                   ->everyMinute();
     }
 

@@ -12,8 +12,10 @@ class JobOptim extends Model
 
     protected $table = self::TABLE;
 
+    public $timestamps = false;
+
     public function getDates()
     {
-        return array('created_at', 'reserved_at', 'available_at');
+        return array();
     }
 }
