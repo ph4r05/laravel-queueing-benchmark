@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Log;
 use MathPHP\Statistics\RandomVariable;
 use MathPHP\Probability\Distribution\Continuous\Normal;
 
+/**
+ * Class FeederSubJob
+ * @deprecated too complicated for now
+ * @package App\Jobs
+ */
 class FeederSubJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
