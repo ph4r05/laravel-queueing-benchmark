@@ -19,7 +19,7 @@ class CreateJobsOptimTable extends Migration
             $table->longText('payload');
             $table->unsignedTinyInteger('attempts');
             $table->unsignedInteger('reserved_at')->nullable();
-            $table->unsignedInteger('version');
+            $table->unsignedInteger('version')->default(0);
             $table->unsignedInteger('available_at');
             $table->unsignedInteger('created_at');
         });
