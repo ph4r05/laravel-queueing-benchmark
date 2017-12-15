@@ -66,6 +66,11 @@ class FeederBatchJob implements ShouldQueue
      */
     protected $beans;
 
+    /**
+     * @var boolean
+     */
+    protected $optim;
+
     protected $queueManager;
     protected $queueInstance;
     protected $workerConnection;
@@ -118,7 +123,7 @@ class FeederBatchJob implements ShouldQueue
         $this->reconfigure();
         $this->restartWorkers();
 
-        $startJobId = Utils::getJobId();
+        $startJobId = Utils::getJobId($this->optim);
 
         Log::info('Queue size: ' . $workerQueueInstance->size());
         Log::info('Going to generate jobs: ' . $batchSize
@@ -141,7 +146,7 @@ class FeederBatchJob implements ShouldQueue
         if (!$this->beans) {
             Log::info('Kickoff all ' . $batchSize . ' jobs in 3 seconds');
             sleep(3);
-            DB::table(Utils::getJobTable())->update(['available_at' => 0]);
+            DB::table(Utils::getJobTable($this->optim))->update(['available_at' => 0]);
         }
 
         $startTime = microtime(true);
@@ -164,14 +169,14 @@ class FeederBatchJob implements ShouldQueue
 
             if (!$this->beans && $deleteMark) {
                 try {
-                    DB::table(Utils::getJobTable())->where('delete_mark', 1)->delete();
+                    DB::table(Utils::getJobTable($this->optim))->where('delete_mark', 1)->delete();
                 } catch (\Throwable $e) {
                     // nah
                 }
             }
         }
 
-        $finalJobId = Utils::getJobId() - 1;
+        $finalJobId = Utils::getJobId($this->optim) - 1;
         $numIds = $finalJobId - $startJobId;
 
         $finish = microtime(true);
@@ -214,6 +219,7 @@ class FeederBatchJob implements ShouldQueue
             Log::info('Beanstalkd queueing');
 
         } elseif (Str::contains($workerConnectionLow, ['optim'])){
+            $this->optim = true;
             $this->queueInstance->deleteFetch = filter_var($this->delTsxFetch ?? config('benchmark.db_delete_tsx'), FILTER_VALIDATE_BOOLEAN);
             Log::info('Optimistic queueing '
                 . ', deleteFetch: ' . var_export($this->queueInstance->deleteFetch, true));

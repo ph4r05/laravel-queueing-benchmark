@@ -23,54 +23,62 @@ class Utils
     }
 
     /**
+     * @param null $optim
      * @return string
      */
-    public static function getJobModel(){
-        return self::isJobOptim() ? JobOptim::class : Job::class;
+    public static function getJobModel($optim=null){
+        return ($optim ?? self::isJobOptim()) ? JobOptim::class : Job::class;
     }
 
     /**
+     * @param null $optim
      * @return string
      */
-    public static function getJobTable(){
-        return self::isJobOptim() ? JobOptim::TABLE : Job::TABLE;
+    public static function getJobTable($optim=null){
+        return ($optim ?? self::isJobOptim()) ? JobOptim::TABLE : Job::TABLE;
     }
 
     /**
+     * @param null $optim
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public static function getJobQuery(){
-        return self::isJobOptim() ? JobOptim::query() : Job::query();
+    public static function getJobQuery($optim=null){
+        return ($optim ?? self::isJobOptim()) ? JobOptim::query() : Job::query();
     }
 
     /**
      * Delete all jobs
+     * @param null $optim
+     * @return
      */
-    public static function deleteJobs(){
-        return DB::table(self::getJobTable())->delete();
+    public static function deleteJobs($optim=null){
+        return DB::table(self::getJobTable($optim))->delete();
     }
 
     /**
      * Number of jobs in the queue
+     * @param null $optim
      * @return int
      */
-    public static function fetchNumJobs(){
-        return Utils::getJobQuery()->count();
+    public static function fetchNumJobs($optim=null){
+        return Utils::getJobQuery($optim=null)->count();
     }
 
     /**
      * Returns ID of the newly inserted and deleted job
+     * @param null $optim
+     * @return mixed
      * @throws \Exception
      */
-    public static function getJobId(){
-        $job = self::isJobOptim() ? new JobOptim() : new Job();
+    public static function getJobId($optim=null){
+        $job = ($optim ?? self::isJobOptim()) ? new JobOptim() : new Job();
         $job->queue = 'XXX';
         $job->payload = 'XXX';
         $job->attempts = 0;
         $job->reserved_at = time()+ 10000;
         $job->available_at = time()+ 10000;
         $job->created_at = time();
-        if (self::isJobOptim()){
+        if ($optim ?? self::isJobOptim()){
             $job->version = 0;
         }
 
