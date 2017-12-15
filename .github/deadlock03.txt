@@ -1,0 +1,494 @@
+Id	User	Host	db	Command	Time	State	Info
+94	root	localhost	information_schema	Sleep	348		NULL
+465	root	localhost	NULL	Sleep	0		NULL
+822	laravel	localhost:57434	laravel	Sleep	0		NULL
+828	laravel	localhost:57450	laravel	Execute	14	Sending data	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+829	laravel	localhost:57452	laravel	Execute	14	updating	delete from `jobs` where `id` = ?
+832	laravel	localhost:57458	laravel	Sleep	0		NULL
+834	laravel	localhost:57462	laravel	Sleep	0		NULL
+835	laravel	localhost:57464	laravel	Sleep	0		NULL
+836	laravel	localhost:57466	laravel	Sleep	0		NULL
+837	laravel	localhost:57468	laravel	Sleep	0		NULL
+838	laravel	localhost:57470	laravel	Sleep	1		NULL
+839	laravel	localhost:57484	laravel	Sleep	0		NULL
+840	laravel	localhost:57486	laravel	Sleep	0		NULL
+841	laravel	localhost:57488	laravel	Sleep	0		NULL
+842	laravel	localhost:57502	laravel	Sleep	0		NULL
+849	laravel	localhost:57516	laravel	Execute	13	Sending data	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+850	laravel	localhost:57518	laravel	Execute	13	Sending data	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+851	laravel	localhost:57520	laravel	Execute	13	Sending data	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+852	laravel	localhost:57522	laravel	Execute	13	Sending data	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+853	laravel	localhost:57524	laravel	Execute	13	Sending data	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+854	laravel	localhost:57526	laravel	Execute	13	Sending data	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+855	laravel	localhost:57528	laravel	Execute	13	Sending data	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+856	laravel	localhost:57530	laravel	Execute	13	Sending data	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+857	root	localhost	NULL	Query	0	starting	show full processlist
+------------------- lock waits -------------------
+------------------- lock waits -------------------
+waiting_trx_id	waiting_thread	waiting_query	blocking_trx_id	blocking_thread	blocking_query
+7333597	853	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333596	854	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333597	853	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333593	856	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333597	853	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333592	855	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333597	853	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333589	851	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333597	853	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333588	852	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333597	853	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333585	849	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333597	853	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333584	850	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333597	853	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333581	828	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333597	853	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333580	829	delete from `jobs` where `id` = ?
+7333596	854	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333593	856	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333596	854	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333592	855	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333596	854	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333589	851	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333596	854	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333588	852	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333596	854	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333585	849	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333596	854	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333584	850	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333596	854	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333581	828	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333596	854	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333580	829	delete from `jobs` where `id` = ?
+7333593	856	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333592	855	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333593	856	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333589	851	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333593	856	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333588	852	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333593	856	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333585	849	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333593	856	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333584	850	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333593	856	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333581	828	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333593	856	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333580	829	delete from `jobs` where `id` = ?
+7333592	855	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333589	851	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333592	855	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333588	852	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333592	855	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333585	849	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333592	855	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333584	850	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333592	855	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333581	828	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333592	855	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333580	829	delete from `jobs` where `id` = ?
+7333589	851	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333588	852	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333589	851	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333585	849	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333589	851	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333584	850	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333589	851	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333581	828	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333589	851	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333580	829	delete from `jobs` where `id` = ?
+7333588	852	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333585	849	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333588	852	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333584	850	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333588	852	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333581	828	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333588	852	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333580	829	delete from `jobs` where `id` = ?
+7333585	849	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333584	850	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333585	849	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333581	828	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333585	849	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333580	829	delete from `jobs` where `id` = ?
+7333584	850	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333581	828	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+7333584	850	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333580	829	delete from `jobs` where `id` = ?
+7333581	828	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update	7333580	829	delete from `jobs` where `id` = ?
+7333580	829	delete from `jobs` where `id` = ?	7333581	828	select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+------------------- lock waits raw -------------------
+------------------- lock waits raw -------------------
+requesting_trx_id	requested_lock_id	blocking_trx_id	blocking_lock_id
+7333597	7333597:30:32:287	7333596	7333596:30:32:287
+7333597	7333597:30:32:287	7333593	7333593:30:32:287
+7333597	7333597:30:32:287	7333592	7333592:30:32:287
+7333597	7333597:30:32:287	7333589	7333589:30:32:287
+7333597	7333597:30:32:287	7333588	7333588:30:32:287
+7333597	7333597:30:32:287	7333585	7333585:30:32:287
+7333597	7333597:30:32:287	7333584	7333584:30:32:287
+7333597	7333597:30:32:287	7333580	7333580:30:32:287
+7333597	7333597:30:32:287	7333581	7333581:30:32:287
+7333596	7333596:30:32:287	7333593	7333593:30:32:287
+7333596	7333596:30:32:287	7333592	7333592:30:32:287
+7333596	7333596:30:32:287	7333589	7333589:30:32:287
+7333596	7333596:30:32:287	7333588	7333588:30:32:287
+7333596	7333596:30:32:287	7333585	7333585:30:32:287
+7333596	7333596:30:32:287	7333584	7333584:30:32:287
+7333596	7333596:30:32:287	7333580	7333580:30:32:287
+7333596	7333596:30:32:287	7333581	7333581:30:32:287
+7333593	7333593:30:32:287	7333592	7333592:30:32:287
+7333593	7333593:30:32:287	7333589	7333589:30:32:287
+7333593	7333593:30:32:287	7333588	7333588:30:32:287
+7333593	7333593:30:32:287	7333585	7333585:30:32:287
+7333593	7333593:30:32:287	7333584	7333584:30:32:287
+7333593	7333593:30:32:287	7333580	7333580:30:32:287
+7333593	7333593:30:32:287	7333581	7333581:30:32:287
+7333592	7333592:30:32:287	7333589	7333589:30:32:287
+7333592	7333592:30:32:287	7333588	7333588:30:32:287
+7333592	7333592:30:32:287	7333585	7333585:30:32:287
+7333592	7333592:30:32:287	7333584	7333584:30:32:287
+7333592	7333592:30:32:287	7333580	7333580:30:32:287
+7333592	7333592:30:32:287	7333581	7333581:30:32:287
+7333589	7333589:30:32:287	7333588	7333588:30:32:287
+7333589	7333589:30:32:287	7333585	7333585:30:32:287
+7333589	7333589:30:32:287	7333584	7333584:30:32:287
+7333589	7333589:30:32:287	7333580	7333580:30:32:287
+7333589	7333589:30:32:287	7333581	7333581:30:32:287
+7333588	7333588:30:32:287	7333585	7333585:30:32:287
+7333588	7333588:30:32:287	7333584	7333584:30:32:287
+7333588	7333588:30:32:287	7333580	7333580:30:32:287
+7333588	7333588:30:32:287	7333581	7333581:30:32:287
+7333585	7333585:30:32:287	7333584	7333584:30:32:287
+7333585	7333585:30:32:287	7333580	7333580:30:32:287
+7333585	7333585:30:32:287	7333581	7333581:30:32:287
+7333584	7333584:30:32:287	7333580	7333580:30:32:287
+7333584	7333584:30:32:287	7333581	7333581:30:32:287
+7333581	7333581:30:15:29	7333580	7333580:30:15:29
+7333580	7333580:30:32:287	7333581	7333581:30:32:287
+------------------- lock waits join -------------------
+------------------- lock waits join -------------------
+lock_id	lock_trx_id	lock_mode	lock_type	lock_table	lock_index	lock_space	lock_page	lock_rec	lock_data
+7333596:30:32:287	7333596	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333593:30:32:287	7333593	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333592:30:32:287	7333592	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333589:30:32:287	7333589	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333588:30:32:287	7333588	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333585:30:32:287	7333585	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333584:30:32:287	7333584	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333580:30:32:287	7333580	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333580:30:15:29	7333580	X	RECORD	`laravel`.`jobs`	PRIMARY	30	15	29	139271
+7333581:30:32:287	7333581	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333581:30:15:29	7333581	X	RECORD	`laravel`.`jobs`	PRIMARY	30	15	29	139271
+7333593:30:32:287	7333593	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333592:30:32:287	7333592	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333589:30:32:287	7333589	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333588:30:32:287	7333588	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333585:30:32:287	7333585	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333584:30:32:287	7333584	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333580:30:32:287	7333580	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333580:30:15:29	7333580	X	RECORD	`laravel`.`jobs`	PRIMARY	30	15	29	139271
+7333581:30:32:287	7333581	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333581:30:15:29	7333581	X	RECORD	`laravel`.`jobs`	PRIMARY	30	15	29	139271
+7333592:30:32:287	7333592	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333589:30:32:287	7333589	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333588:30:32:287	7333588	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333585:30:32:287	7333585	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333584:30:32:287	7333584	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333580:30:32:287	7333580	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333580:30:15:29	7333580	X	RECORD	`laravel`.`jobs`	PRIMARY	30	15	29	139271
+7333581:30:32:287	7333581	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333581:30:15:29	7333581	X	RECORD	`laravel`.`jobs`	PRIMARY	30	15	29	139271
+7333589:30:32:287	7333589	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333588:30:32:287	7333588	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333585:30:32:287	7333585	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333584:30:32:287	7333584	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333580:30:32:287	7333580	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333580:30:15:29	7333580	X	RECORD	`laravel`.`jobs`	PRIMARY	30	15	29	139271
+7333581:30:32:287	7333581	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333581:30:15:29	7333581	X	RECORD	`laravel`.`jobs`	PRIMARY	30	15	29	139271
+7333588:30:32:287	7333588	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333585:30:32:287	7333585	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333584:30:32:287	7333584	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333580:30:32:287	7333580	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333580:30:15:29	7333580	X	RECORD	`laravel`.`jobs`	PRIMARY	30	15	29	139271
+7333581:30:32:287	7333581	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333581:30:15:29	7333581	X	RECORD	`laravel`.`jobs`	PRIMARY	30	15	29	139271
+7333585:30:32:287	7333585	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333584:30:32:287	7333584	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333580:30:32:287	7333580	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333580:30:15:29	7333580	X	RECORD	`laravel`.`jobs`	PRIMARY	30	15	29	139271
+7333581:30:32:287	7333581	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333581:30:15:29	7333581	X	RECORD	`laravel`.`jobs`	PRIMARY	30	15	29	139271
+7333584:30:32:287	7333584	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333580:30:32:287	7333580	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333580:30:15:29	7333580	X	RECORD	`laravel`.`jobs`	PRIMARY	30	15	29	139271
+7333581:30:32:287	7333581	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333581:30:15:29	7333581	X	RECORD	`laravel`.`jobs`	PRIMARY	30	15	29	139271
+7333580:30:32:287	7333580	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333580:30:15:29	7333580	X	RECORD	`laravel`.`jobs`	PRIMARY	30	15	29	139271
+7333581:30:32:287	7333581	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333581:30:15:29	7333581	X	RECORD	`laravel`.`jobs`	PRIMARY	30	15	29	139271
+7333580:30:32:287	7333580	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333580:30:15:29	7333580	X	RECORD	`laravel`.`jobs`	PRIMARY	30	15	29	139271
+7333581:30:32:287	7333581	X	RECORD	`laravel`.`jobs`	jobs_queue_index	30	32	287	'default', 139271
+7333581:30:15:29	7333581	X	RECORD	`laravel`.`jobs`	PRIMARY	30	15	29	139271
+------------------- innodb status -------------------
+------------------- innodb status -------------------
+*************************** 1. row ***************************
+  Type: InnoDB
+  Name: 
+Status: 
+=====================================
+2017-12-15 13:34:56 0x7fa578765700 INNODB MONITOR OUTPUT
+=====================================
+Per second averages calculated from the last 53 seconds
+-----------------
+BACKGROUND THREAD
+-----------------
+srv_master_thread loops: 1089 srv_active, 0 srv_shutdown, 7006 srv_idle
+srv_master_thread log flush and writes: 8095
+----------
+SEMAPHORES
+----------
+OS WAIT ARRAY INFO: reservation count 1343285
+OS WAIT ARRAY INFO: signal count 1043966
+RW-shared spins 0, rounds 131794, OS waits 60056
+RW-excl spins 0, rounds 313760, OS waits 25074
+RW-sx spins 1211, rounds 36316, OS waits 701
+Spin rounds per wait: 131794.00 RW-shared, 313760.00 RW-excl, 29.99 RW-sx
+------------------------
+LATEST DETECTED DEADLOCK
+------------------------
+2017-12-15 13:11:58 0x7fa57826b700
+*** (1) TRANSACTION:
+TRANSACTION 7291073, ACTIVE 0 sec updating or deleting
+mysql tables in use 1, locked 1
+LOCK WAIT 3 lock struct(s), heap size 1136, 2 row lock(s), undo log entries 1
+MySQL thread id 94, OS thread handle 140348794578688, query id 4094525 localhost root updating
+delete from laravel.jobs
+*** (1) WAITING FOR THIS LOCK TO BE GRANTED:
+RECORD LOCKS space id 30 page no 32 n bits 792 index jobs_queue_index of table `laravel`.`jobs` trx id 7291073 lock_mode X locks rec but not gap waiting
+Record lock, heap no 2 PHYSICAL RECORD: n_fields 2; compact format; info bits 0
+ 0: len 7; hex 64656661756c74; asc default;;
+ 1: len 8; hex 000000000001f7fe; asc         ;;
+
+*** (2) TRANSACTION:
+TRANSACTION 7291077, ACTIVE 0 sec starting index read
+mysql tables in use 1, locked 1
+3 lock struct(s), heap size 1136, 2 row lock(s)
+MySQL thread id 777, OS thread handle 140348662134528, query id 4094533 localhost 127.0.0.1 laravel Sending data
+select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+*** (2) HOLDS THE LOCK(S):
+RECORD LOCKS space id 30 page no 32 n bits 792 index jobs_queue_index of table `laravel`.`jobs` trx id 7291077 lock_mode X
+Record lock, heap no 2 PHYSICAL RECORD: n_fields 2; compact format; info bits 0
+ 0: len 7; hex 64656661756c74; asc default;;
+ 1: len 8; hex 000000000001f7fe; asc         ;;
+
+*** (2) WAITING FOR THIS LOCK TO BE GRANTED:
+RECORD LOCKS space id 30 page no 8 n bits 96 index PRIMARY of table `laravel`.`jobs` trx id 7291077 lock_mode X locks rec but not gap waiting
+Record lock, heap no 2 PHYSICAL RECORD: n_fields 10; compact format; info bits 32
+ 0: len 8; hex 000000000001f7fe; asc         ;;
+ 1: len 6; hex 0000006f40c1; asc    o@ ;;
+ 2: len 7; hex 6a0000019c12cf; asc j      ;;
+ 3: len 7; hex 64656661756c74; asc default;;
+ 4: len 30; hex 7b22646973706c61794e616d65223a224170705c5c4a6f62735c5c576f72; asc {"displayName":"App\\Jobs\\Wor; (total 472 bytes);
+ 5: len 1; hex 01; asc  ;;
+ 6: len 4; hex 5a33bc02; asc Z3  ;;
+ 7: len 4; hex 00000000; asc     ;;
+ 8: len 4; hex 5a33bb20; asc Z3  ;;
+ 9: len 1; hex 80; asc  ;;
+
+*** WE ROLL BACK TRANSACTION (2)
+------------
+TRANSACTIONS
+------------
+Trx id counter 7333598
+Purge done for trx's n:o < 7333579 undo n:o < 0 state: running but idle
+History list length 7
+LIST OF TRANSACTIONS FOR EACH SESSION:
+---TRANSACTION 421824102422128, not started
+0 lock struct(s), heap size 1136, 0 row lock(s)
+---TRANSACTION 421824102421208, not started
+0 lock struct(s), heap size 1136, 0 row lock(s)
+---TRANSACTION 421824102420288, not started
+0 lock struct(s), heap size 1136, 0 row lock(s)
+---TRANSACTION 421824102419368, not started
+0 lock struct(s), heap size 1136, 0 row lock(s)
+---TRANSACTION 421824102418448, not started
+0 lock struct(s), heap size 1136, 0 row lock(s)
+---TRANSACTION 421824102417528, not started
+0 lock struct(s), heap size 1136, 0 row lock(s)
+---TRANSACTION 421824102416608, not started
+0 lock struct(s), heap size 1136, 0 row lock(s)
+---TRANSACTION 421824102415688, not started
+0 lock struct(s), heap size 1136, 0 row lock(s)
+---TRANSACTION 421824102414768, not started
+0 lock struct(s), heap size 1136, 0 row lock(s)
+---TRANSACTION 421824102413848, not started
+0 lock struct(s), heap size 1136, 0 row lock(s)
+---TRANSACTION 421824102412008, not started
+0 lock struct(s), heap size 1136, 0 row lock(s)
+---TRANSACTION 421824102401888, not started
+0 lock struct(s), heap size 1136, 0 row lock(s)
+---TRANSACTION 421824102407408, not started
+0 lock struct(s), heap size 1136, 0 row lock(s)
+---TRANSACTION 7333597, ACTIVE 13 sec starting index read
+mysql tables in use 1, locked 1
+LOCK WAIT 2 lock struct(s), heap size 1136, 1 row lock(s)
+MySQL thread id 853, OS thread handle 140348665546496, query id 4413355 localhost 127.0.0.1 laravel Sending data
+select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+------- TRX HAS BEEN WAITING 13 SEC FOR THIS LOCK TO BE GRANTED:
+RECORD LOCKS space id 30 page no 32 n bits 824 index jobs_queue_index of table `laravel`.`jobs` trx id 7333597 lock_mode X waiting
+Record lock, heap no 287 PHYSICAL RECORD: n_fields 2; compact format; info bits 0
+ 0: len 7; hex 64656661756c74; asc default;;
+ 1: len 8; hex 0000000000022007; asc         ;;
+
+------------------
+---TRANSACTION 7333596, ACTIVE 13 sec starting index read
+mysql tables in use 1, locked 1
+LOCK WAIT 2 lock struct(s), heap size 1136, 1 row lock(s)
+MySQL thread id 854, OS thread handle 140348666750720, query id 4413353 localhost 127.0.0.1 laravel Sending data
+select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+------- TRX HAS BEEN WAITING 13 SEC FOR THIS LOCK TO BE GRANTED:
+RECORD LOCKS space id 30 page no 32 n bits 824 index jobs_queue_index of table `laravel`.`jobs` trx id 7333596 lock_mode X waiting
+Record lock, heap no 287 PHYSICAL RECORD: n_fields 2; compact format; info bits 0
+ 0: len 7; hex 64656661756c74; asc default;;
+ 1: len 8; hex 0000000000022007; asc         ;;
+
+------------------
+---TRANSACTION 7333593, ACTIVE 13 sec starting index read
+mysql tables in use 1, locked 1
+LOCK WAIT 2 lock struct(s), heap size 1136, 1 row lock(s)
+MySQL thread id 856, OS thread handle 140348660930304, query id 4413314 localhost 127.0.0.1 laravel Sending data
+select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+------- TRX HAS BEEN WAITING 13 SEC FOR THIS LOCK TO BE GRANTED:
+RECORD LOCKS space id 30 page no 32 n bits 824 index jobs_queue_index of table `laravel`.`jobs` trx id 7333593 lock_mode X waiting
+Record lock, heap no 287 PHYSICAL RECORD: n_fields 2; compact format; info bits 0
+ 0: len 7; hex 64656661756c74; asc default;;
+ 1: len 8; hex 0000000000022007; asc         ;;
+
+------------------
+---TRANSACTION 7333592, ACTIVE 13 sec starting index read
+mysql tables in use 1, locked 1
+LOCK WAIT 2 lock struct(s), heap size 1136, 1 row lock(s)
+MySQL thread id 855, OS thread handle 140348665747200, query id 4413310 localhost 127.0.0.1 laravel Sending data
+select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+------- TRX HAS BEEN WAITING 13 SEC FOR THIS LOCK TO BE GRANTED:
+RECORD LOCKS space id 30 page no 32 n bits 824 index jobs_queue_index of table `laravel`.`jobs` trx id 7333592 lock_mode X waiting
+Record lock, heap no 287 PHYSICAL RECORD: n_fields 2; compact format; info bits 0
+ 0: len 7; hex 64656661756c74; asc default;;
+ 1: len 8; hex 0000000000022007; asc         ;;
+
+------------------
+---TRANSACTION 7333589, ACTIVE 13 sec starting index read
+mysql tables in use 1, locked 1
+LOCK WAIT 2 lock struct(s), heap size 1136, 1 row lock(s)
+MySQL thread id 851, OS thread handle 140348794177280, query id 4413267 localhost 127.0.0.1 laravel Sending data
+select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+------- TRX HAS BEEN WAITING 13 SEC FOR THIS LOCK TO BE GRANTED:
+RECORD LOCKS space id 30 page no 32 n bits 824 index jobs_queue_index of table `laravel`.`jobs` trx id 7333589 lock_mode X waiting
+Record lock, heap no 287 PHYSICAL RECORD: n_fields 2; compact format; info bits 0
+ 0: len 7; hex 64656661756c74; asc default;;
+ 1: len 8; hex 0000000000022007; asc         ;;
+
+------------------
+---TRANSACTION 7333588, ACTIVE 13 sec starting index read
+mysql tables in use 1, locked 1
+LOCK WAIT 2 lock struct(s), heap size 1136, 1 row lock(s)
+MySQL thread id 852, OS thread handle 140348663740160, query id 4413266 localhost 127.0.0.1 laravel Sending data
+select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+------- TRX HAS BEEN WAITING 13 SEC FOR THIS LOCK TO BE GRANTED:
+RECORD LOCKS space id 30 page no 32 n bits 824 index jobs_queue_index of table `laravel`.`jobs` trx id 7333588 lock_mode X waiting
+Record lock, heap no 287 PHYSICAL RECORD: n_fields 2; compact format; info bits 0
+ 0: len 7; hex 64656661756c74; asc default;;
+ 1: len 8; hex 0000000000022007; asc         ;;
+
+------------------
+---TRANSACTION 7333585, ACTIVE 13 sec starting index read
+mysql tables in use 1, locked 1
+LOCK WAIT 2 lock struct(s), heap size 1136, 1 row lock(s)
+MySQL thread id 849, OS thread handle 140348666951424, query id 4413255 localhost 127.0.0.1 laravel Sending data
+select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+------- TRX HAS BEEN WAITING 13 SEC FOR THIS LOCK TO BE GRANTED:
+RECORD LOCKS space id 30 page no 32 n bits 824 index jobs_queue_index of table `laravel`.`jobs` trx id 7333585 lock_mode X waiting
+Record lock, heap no 287 PHYSICAL RECORD: n_fields 2; compact format; info bits 0
+ 0: len 7; hex 64656661756c74; asc default;;
+ 1: len 8; hex 0000000000022007; asc         ;;
+
+------------------
+---TRANSACTION 7333584, ACTIVE 13 sec starting index read
+mysql tables in use 1, locked 1
+LOCK WAIT 2 lock struct(s), heap size 1136, 1 row lock(s)
+MySQL thread id 850, OS thread handle 140348667553536, query id 4413253 localhost 127.0.0.1 laravel Sending data
+select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+------- TRX HAS BEEN WAITING 13 SEC FOR THIS LOCK TO BE GRANTED:
+RECORD LOCKS space id 30 page no 32 n bits 824 index jobs_queue_index of table `laravel`.`jobs` trx id 7333584 lock_mode X waiting
+Record lock, heap no 287 PHYSICAL RECORD: n_fields 2; compact format; info bits 0
+ 0: len 7; hex 64656661756c74; asc default;;
+ 1: len 8; hex 0000000000022007; asc         ;;
+
+------------------
+---TRANSACTION 7333581, ACTIVE 14 sec starting index read
+mysql tables in use 1, locked 1
+LOCK WAIT 3 lock struct(s), heap size 1136, 2 row lock(s)
+MySQL thread id 828, OS thread handle 140348665145088, query id 4413164 localhost 127.0.0.1 laravel Sending data
+select * from `jobs` where `queue` = ? and ((`reserved_at` is null and `available_at` <= ?) or (`reserved_at` <= ?)) order by `id` asc limit 1 for update
+------- TRX HAS BEEN WAITING 14 SEC FOR THIS LOCK TO BE GRANTED:
+RECORD LOCKS space id 30 page no 15 n bits 96 index PRIMARY of table `laravel`.`jobs` trx id 7333581 lock_mode X locks rec but not gap waiting
+Record lock, heap no 29 PHYSICAL RECORD: n_fields 10; compact format; info bits 32
+ 0: len 8; hex 0000000000022007; asc         ;;
+ 1: len 6; hex 0000006fe6cc; asc    o  ;;
+ 2: len 7; hex 2a000001a727b3; asc *    ' ;;
+ 3: len 7; hex 64656661756c74; asc default;;
+ 4: len 30; hex 7b22646973706c61794e616d65223a224170705c5c4a6f62735c5c576f72; asc {"displayName":"App\\Jobs\\Wor; (total 472 bytes);
+ 5: len 1; hex 01; asc  ;;
+ 6: len 4; hex 5a33c162; asc Z3 b;;
+ 7: len 4; hex 00000000; asc     ;;
+ 8: len 4; hex 5a33c026; asc Z3 &;;
+ 9: len 1; hex 80; asc  ;;
+
+------------------
+---TRANSACTION 7333580, ACTIVE 14 sec updating or deleting
+mysql tables in use 1, locked 1
+LOCK WAIT 3 lock struct(s), heap size 1136, 2 row lock(s), undo log entries 1
+MySQL thread id 829, OS thread handle 140348794377984, query id 4413166 localhost 127.0.0.1 laravel updating
+delete from `jobs` where `id` = ?
+------- TRX HAS BEEN WAITING 14 SEC FOR THIS LOCK TO BE GRANTED:
+RECORD LOCKS space id 30 page no 32 n bits 824 index jobs_queue_index of table `laravel`.`jobs` trx id 7333580 lock_mode X locks rec but not gap waiting
+Record lock, heap no 287 PHYSICAL RECORD: n_fields 2; compact format; info bits 0
+ 0: len 7; hex 64656661756c74; asc default;;
+ 1: len 8; hex 0000000000022007; asc         ;;
+
+------------------
+--------
+FILE I/O
+--------
+I/O thread 0 state: waiting for completed aio requests (insert buffer thread)
+I/O thread 1 state: waiting for completed aio requests (log thread)
+I/O thread 2 state: waiting for completed aio requests (read thread)
+I/O thread 3 state: waiting for completed aio requests (read thread)
+I/O thread 4 state: waiting for completed aio requests (read thread)
+I/O thread 5 state: waiting for completed aio requests (read thread)
+I/O thread 6 state: waiting for completed aio requests (write thread)
+I/O thread 7 state: waiting for completed aio requests (write thread)
+I/O thread 8 state: waiting for completed aio requests (write thread)
+I/O thread 9 state: waiting for completed aio requests (write thread)
+Pending normal aio reads: [0, 0, 0, 0] , aio writes: [0, 0, 0, 0] ,
+ ibuf aio reads:, log i/o's:, sync i/o's:
+Pending flushes (fsync) log: 0; buffer pool: 0
+1494 OS file reads, 347386 OS file writes, 315482 OS fsyncs
+0.00 reads/s, 0 avg bytes/read, 15.87 writes/s, 10.83 fsyncs/s
+-------------------------------------
+INSERT BUFFER AND ADAPTIVE HASH INDEX
+-------------------------------------
+Ibuf: size 1, free list len 23, seg size 25, 0 merges
+merged operations:
+ insert 0, delete mark 0, delete 0
+discarded operations:
+ insert 0, delete mark 0, delete 0
+Hash table size 34673, node heap has 0 buffer(s)
+Hash table size 34673, node heap has 0 buffer(s)
+Hash table size 34673, node heap has 16 buffer(s)
+Hash table size 34673, node heap has 1 buffer(s)
+Hash table size 34673, node heap has 1 buffer(s)
+Hash table size 34673, node heap has 0 buffer(s)
+Hash table size 34673, node heap has 1 buffer(s)
+Hash table size 34673, node heap has 0 buffer(s)
+26.32 hash searches/s, 174.51 non-hash searches/s
+---
+LOG
+---
+Log sequence number 1965660896
+Log flushed up to   1965660896
+Pages flushed up to 1965660896
+Last checkpoint at  1965660887
+0 pending log flushes, 0 pending chkp writes
+311193 log i/o's done, 10.55 log i/o's/second
+----------------------
+BUFFER POOL AND MEMORY
+----------------------
+Total large memory allocated 137428992
+Dictionary memory allocated 138043
+Buffer pool size   8191
+Free buffers       6588
+Database pages     1584
+Old database pages 593
+Modified db pages  0
+Pending reads      0
+Pending writes: LRU 0, flush list 0, single page 0
+Pages made young 7, not young 0
+0.00 youngs/s, 0.00 non-youngs/s
+Pages read 1464, created 120, written 34135
+0.00 reads/s, 0.00 creates/s, 5.17 writes/s
+Buffer pool hit rate 1000 / 1000, young-making rate 0 / 1000 not 0 / 1000
+Pages read ahead 0.00/s, evicted without access 0.00/s, Random read ahead 0.00/s
+LRU len: 1584, unzip_LRU len: 0
+I/O sum[0]:cur[0], unzip sum[0]:cur[0]
+--------------
+ROW OPERATIONS
+--------------
+0 queries inside InnoDB, 0 queries in queue
+0 read views open inside InnoDB
+Process ID=11327, Main thread ID=140348825573120, state: sleeping
+Number of rows inserted 149171, updated 285254, deleted 139270, read 78542216
+0.00 inserts/s, 5.25 updates/s, 5.23 deletes/s, 39477.09 reads/s
+----------------------------
+END OF INNODB MONITOR OUTPUT
+============================
+
