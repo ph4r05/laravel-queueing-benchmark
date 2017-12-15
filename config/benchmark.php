@@ -8,6 +8,10 @@ return [
     'job_feeding' => env('B_FEEDING', false),
     'job_clone_probability' => env('B_JOB_CLONE', 0),
 
+    'db_delete_tsx' => env('DELETE_TSX_FETCH', false),
+    'db_delete_tsx_retry' => env('DELETE_TSX_RETRY', 0),
+    'job_delete_mark' => env('B_JOB_DELETE_MARK', false),
+
     // Number of spawned workers
     // Value used for work distribution. Does not influence number of started workers.
     'num_workers' => env('B_NUM_WORKERS', 50),

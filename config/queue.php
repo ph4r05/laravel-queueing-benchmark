@@ -80,8 +80,6 @@ return [
 
     ],
 
-    'db_delete_tsx' => env('DELETE_TSX', false),
-
     /*
     |--------------------------------------------------------------------------
     | Failed Queue Jobs

@@ -35,7 +35,7 @@ class OptimisticDatabaseQueue extends DatabaseQueue implements QueueContract
     public function __construct(Connection $database, string $table, string $default = 'default', int $retryAfter = 60, $config = [])
     {
         parent::__construct($database, $table, $default, $retryAfter);
-        $this->deleteFetch = $config['deleteFetch'] ?? config('queue.db_delete_tsx');
+        $this->deleteFetch = $config['deleteFetch'] ?? config('benchmark.db_delete_tsx');
     }
 
     /**

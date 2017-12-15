@@ -20,14 +20,18 @@ sudo apt install php7.1 php7.1-cli php7.1-common php7.1-json php7.1-opcache \
 sudo apt install php-pear git libdbd-mysql-perl libdbi-perl
 sudo apt install build-essential tcl
 sudo apt install supervisor
+sudo apt install beanstalkd
 sudo apt install redis-server
 sudo apt install mysql-server
 sudo apt install postgresql postgresql-contrib
 
 sudo systemctl enable supervisor.service
 sudo systemctl enable redis.service
+sudo systemctl enable beanstalkd.service
 
 sudo systemctl start supervisor.service
+sudo systemctl start redis.service
+sudo systemctl start beanstalkd.service
 ```
 
 ### MySQL
@@ -66,11 +70,17 @@ echo '* * * * * laravel php /var/www/laravel/artisan schedule:run >> /dev/null 2
 php artisan migrate
 ```
 
+Beanstalkd Console:
+
+```bash
+composer create-project ptrofimov/beanstalk_console -s dev /var/www/beanstalk-console
+php -S [vultr-instance-ip]:7654 -t public
+```
 
 Supervisor:
 
 ```
-[program:laravelOpt]
+[program:laravelOptim]
 process_name=%(program_name)s_%(process_num)02d
 directory=/var/www/laravel
 command=php /var/www/laravel/artisan queue:work ph4DBOptim --queue=high,default,low --sleep=1 --tries=3
@@ -94,4 +104,17 @@ autostart=true
 autorestart=true
 stderr_logfile=/var/log/laravel-pess.err.log
 stdout_logfile=/var/log/laravel-pess.out.log
+```
+
+```
+[program:laravelBeans]
+process_name=%(program_name)s_%(process_num)02d
+directory=/var/www/laravel
+command=php /var/www/laravel/artisan queue:work beanstalkd --queue=high,default,low --sleep=1 --tries=3
+user=laravel
+numprocs=50
+autostart=true
+autorestart=true
+stderr_logfile=/var/log/laravel-beans.err.log
+stdout_logfile=/var/log/laravel-beans.out.log
 ```

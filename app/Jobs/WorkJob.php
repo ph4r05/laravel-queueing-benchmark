@@ -8,6 +8,8 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Support\Facades\Log;
 
 class WorkJob implements ShouldQueue
 {
@@ -54,7 +56,12 @@ class WorkJob implements ShouldQueue
             $job->probabilityOfClone = $this->probabilityOfClone;
             $job->onConnection($this->connection)
                 ->onQueue($this->queue);
-            dispatch($job);
+
+            try {
+                app(Dispatcher::class)->dispatch($job);
+            }catch(\Throwable $e){
+                Log::error('INS probably deadlock: ' . $e->getMessage());
+            }
         }
     }
 }

@@ -23,6 +23,18 @@ class PessimisticDatabaseQueue extends DatabaseQueue implements QueueContract
     protected $deleteFetch = true;
 
     /**
+     * Retry indicator for delete tsx
+     * @var int
+     */
+    protected $deleteRetry = 0;
+
+    /**
+     * Delete mark - 2 stage delete
+     * @var bool
+     */
+    protected $deleteMark = false;
+
+    /**
      * Create a new database queue instance.
      *
      * @param Connection $database
@@ -34,7 +46,9 @@ class PessimisticDatabaseQueue extends DatabaseQueue implements QueueContract
     public function __construct(Connection $database, string $table, string $default = 'default', int $retryAfter = 60, $config = [])
     {
         parent::__construct($database, $table, $default, $retryAfter);
-        $this->deleteFetch = $config['deleteFetch'] ?? config('queue.db_delete_tsx');
+        $this->deleteFetch = $config['deleteFetch'] ?? config('benchmark.db_delete_tsx');
+        $this->deleteRetry = $config['deleteRetry'] ?? config('benchmark.db_delete_tsx_retry');
+        $this->deleteMark = $config['deleteMark'] ?? config('benchmark.job_delete_mark');
     }
 
     /**
@@ -50,6 +64,12 @@ class PessimisticDatabaseQueue extends DatabaseQueue implements QueueContract
 
         return $this->database->transaction(function () use ($queue) {
             if ($job = $this->getNextAvailableJob($queue)) {
+
+                if ($job->delete_mark){
+                    Log::info('...delete mark: ' . $job->id);
+                    // TODO: $job->delete();
+                }
+
                 return $this->marshalJob($queue, $job);
             }
 
@@ -88,12 +108,28 @@ class PessimisticDatabaseQueue extends DatabaseQueue implements QueueContract
                 if ($this->database->table($this->table)->lockForUpdate()->find($id)) {
                     $this->database->table($this->table)->where('id', $id)->delete();
                 }
-            }, 2);
+            }, $this->deleteRetry > 0 ? $this->deleteRetry : 1);
 
         } else {
-            $this->database->transaction(function () use ($queue, $id) {
-                $this->database->table($this->table)->where('id', $id)->delete();
-            }, 2);
+                if($this->deleteMark) {
+                    $this->database->transaction(function () use ($queue, $id) {
+                        $this->database->table($this->table)->where('id', $id)->update(['delete_mark' => 1]);
+                    });
+                }
+
+            try {
+                if ($this->deleteRetry <= 0){
+                    $this->database->table($this->table)->where('id', $id)->delete();
+
+                } else {
+                    $this->database->transaction(function () use ($queue, $id) {
+                        $this->database->table($this->table)->where('id', $id)->delete();
+                    }, $this->deleteRetry);
+                }
+
+            } catch(\Throwable $e){
+                Log::error('Probably deadlock: ' . $e->getMessage());
+            }
         }
     }
 
