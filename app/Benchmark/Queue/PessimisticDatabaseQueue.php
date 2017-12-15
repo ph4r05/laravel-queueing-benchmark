@@ -20,19 +20,19 @@ class PessimisticDatabaseQueue extends DatabaseQueue implements QueueContract
      * Should perform transaction(find; delete by id)
      * @var bool
      */
-    protected $deleteFetch = true;
+    public $deleteFetch = true;
 
     /**
      * Retry indicator for delete tsx
      * @var int
      */
-    protected $deleteRetry = 0;
+    public $deleteRetry = 0;
 
     /**
      * Delete mark - 2 stage delete
      * @var bool
      */
-    protected $deleteMark = false;
+    public $deleteMark = false;
 
     /**
      * Create a new database queue instance.

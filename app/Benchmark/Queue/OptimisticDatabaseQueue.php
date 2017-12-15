@@ -21,7 +21,7 @@ class OptimisticDatabaseQueue extends DatabaseQueue implements QueueContract
      * Similar to transaction(find; delete by id)
      * @var bool
      */
-    protected $deleteFetch = false;
+    public $deleteFetch = false;
 
     /**
      * Create a new database queue instance.
