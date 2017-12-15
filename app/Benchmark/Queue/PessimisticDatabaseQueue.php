@@ -103,6 +103,12 @@ class PessimisticDatabaseQueue extends DatabaseQueue implements QueueContract
      */
     public function deleteReserved($queue, $id)
     {
+        if($this->deleteMark) {
+            $this->database->transaction(function () use ($queue, $id) {
+                $this->database->table($this->table)->where('id', $id)->update(['delete_mark' => 1]);
+            });
+        }
+
         if ($this->deleteFetch){
             $this->database->transaction(function () use ($queue, $id) {
                 if ($this->database->table($this->table)->lockForUpdate()->find($id)) {
@@ -111,12 +117,6 @@ class PessimisticDatabaseQueue extends DatabaseQueue implements QueueContract
             }, $this->deleteRetry > 0 ? $this->deleteRetry : 1);
 
         } else {
-                if($this->deleteMark) {
-                    $this->database->transaction(function () use ($queue, $id) {
-                        $this->database->table($this->table)->where('id', $id)->update(['delete_mark' => 1]);
-                    });
-                }
-
             try {
                 if ($this->deleteRetry <= 0){
                     $this->database->table($this->table)->where('id', $id)->delete();
