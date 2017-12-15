@@ -6,6 +6,7 @@ use App\Benchmark\Queue\PessimisticDatabaseConnector;
 use App\Benchmark\Queue\Ph4Worker;
 use App\Benchmark\Queue\OptimisticDatabaseConnector;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Queue\Worker;
 use Illuminate\Support\ServiceProvider;
 
 
@@ -58,7 +59,7 @@ class QueueServiceProvider extends ServiceProvider
      */
     protected function registerWorker()
     {
-        $this->app->singleton('queue.worker', function () {
+        $this->app->singleton(Worker::class, function () {
             return new Ph4Worker(
                 $this->app['queue'], $this->app['events'], $this->app[ExceptionHandler::class]
             );
