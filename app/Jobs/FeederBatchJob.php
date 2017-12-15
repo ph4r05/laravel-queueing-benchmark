@@ -95,10 +95,11 @@ class FeederBatchJob implements ShouldQueue
         Utils::deleteJobs();
 
         $rand = new SystemRand();
-        $mean = $this->workMean ?? config('benchmark.job_mean_time');
-        $stddev = config('benchmark.job_stdev_time');
-        $cloneProbab = $this->workClone ?? config('benchmark.job_clone_probability');
-        $deleteMark = $this->delMark ?? config('benchmark.job_delete_mark');
+        $stddev = floatval(config('benchmark.job_stdev_time'));
+        $mean = floatval($this->workMean ?? config('benchmark.job_mean_time'));
+        $cloneProbab = floatval($this->workClone ?? config('benchmark.job_clone_probability'));
+        $deleteMark = filter_var($this->delMark ?? config('benchmark.job_delete_mark'), FILTER_VALIDATE_BOOLEAN);
+
         $batchSize = config('benchmark.job_batch_size');
         $workerQueue = config('benchmark.job_worker_queue');
         $this->workerConnection = $this->conn ?? config('benchmark.job_working_connection');
@@ -106,7 +107,8 @@ class FeederBatchJob implements ShouldQueue
         $this->queueManager = $queueManager;
         $this->queueInstance = $queueManager->connection($this->workerConnection);
         $workerQueueInstance = $this->queueInstance;
-        Log::info('Worker queue: ' . $workerQueueInstance->getConnectionName());
+        Log::info('Worker queue: ' . $workerQueueInstance->getConnectionName()
+            . '; mark: ' . ($deleteMark ? 'Y' : 'N'));
 
         // Reconfigure dotenv
         $this->reconfigureDot();
@@ -116,7 +118,9 @@ class FeederBatchJob implements ShouldQueue
         $startJobId = Utils::getJobId();
 
         Log::info('Queue size: ' . $workerQueueInstance->size());
-        Log::info('Going to generate jobs: ' . $batchSize . ', start job id: ' . $startJobId);
+        Log::info('Going to generate jobs: ' . $batchSize
+            . ', start job id: ' . $startJobId);
+
         for($i=0; $i<$batchSize; $i++){
             $job = new WorkJob();
             $job->runningTime = $mean <= 0 ? -1 : $rand->gaussianRandom($mean, $stddev);
@@ -207,13 +211,13 @@ class FeederBatchJob implements ShouldQueue
             Log::info('Beanstalkd queueing');
 
         } elseif (Str::contains($workerConnectionLow, ['optim'])){
-            $this->queueInstance->deleteFetch = $this->delTsxFetch ?? config('benchmark.db_delete_tsx');
+            $this->queueInstance->deleteFetch = filter_var($this->delTsxFetch ?? config('benchmark.db_delete_tsx'), FILTER_VALIDATE_BOOLEAN);
             Log::info('Optimistic queueing');
 
         } elseif (Str::contains($workerConnectionLow, ['pess'])) {
-            $this->queueInstance->deleteFetch = $this->delTsxFetch ?? config('benchmark.db_delete_tsx');
-            $this->queueInstance->deleteRetry = $this->delTsxRetry ?? config('benchmark.db_delete_tsx_retry');
-            $this->queueInstance->deleteMark = $this->delMark ?? config('benchmark.job_delete_mark');
+            $this->queueInstance->deleteFetch = filter_var($this->delTsxFetch ?? config('benchmark.db_delete_tsx'), FILTER_VALIDATE_BOOLEAN);
+            $this->queueInstance->deleteMark = filter_var($this->delMark ?? config('benchmark.job_delete_mark'), FILTER_VALIDATE_BOOLEAN);
+            $this->queueInstance->deleteRetry = intval($this->delTsxRetry ?? config('benchmark.db_delete_tsx_retry'));
             Log::info('Pessimistic queueing');
 
         } else {
