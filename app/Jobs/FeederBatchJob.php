@@ -11,18 +11,64 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Jackiedo\DotenvEditor\Facades\DotenvEditor;
 
 class FeederBatchJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
+     * Override queue connection for workers
+     */
+    public $conn;
+
+    /**
+     * Fetch before delete
+     */
+    public $delTsxFetch;
+
+    /**
+     * Delete retry counts
+     * @var
+     */
+    public $delTsxRetry;
+
+    /**
+     * Delete mark 2stage
+     * @var
+     */
+    public $delMark;
+
+    /**
+     * Clonning probability
+     * @var
+     */
+    public $workClone;
+
+    /**
+     * Worker sleep mean time milliseconds
+     * @var
+     */
+    public $workMean;
+
+    /**
+     * Verify correctness
+     * @var
+     */
+    public $verify;
+
+    /**
      * @var boolean
      */
-    public $beans;
+    protected $beans;
+
+    protected $queueManager;
+    protected $queueInstance;
+    protected $workerConnection;
 
     /**
      * Create a new job instance.
@@ -49,21 +95,23 @@ class FeederBatchJob implements ShouldQueue
         Utils::deleteJobs();
 
         $rand = new SystemRand();
-        $mean = config('benchmark.job_mean_time');
+        $mean = $this->workMean ?? config('benchmark.job_mean_time');
         $stddev = config('benchmark.job_stdev_time');
-        $cloneProbab = config('benchmark.job_clone_probability');
-        $deleteMark = config('benchmark.job_delete_mark');
+        $cloneProbab = $this->workClone ?? config('benchmark.job_clone_probability');
+        $deleteMark = $this->delMark ?? config('benchmark.job_delete_mark');
         $batchSize = config('benchmark.job_batch_size');
         $workerQueue = config('benchmark.job_worker_queue');
-        $workerConnection = config('benchmark.job_working_connection');
+        $this->workerConnection = $this->conn ?? config('benchmark.job_working_connection');
 
-        $workerQueueInstance = $queueManager->connection($workerConnection);
+        $this->queueManager = $queueManager;
+        $this->queueInstance = $queueManager->connection($this->workerConnection);
+        $workerQueueInstance = $this->queueInstance;
         Log::info('Worker queue: ' . $workerQueueInstance->getConnectionName());
 
-        if (Str::contains($workerConnection, ['beans'])){
-            $this->beans = true;
-            Log::info('Beanstalkd queueing');
-        }
+        // Reconfigure dotenv
+        $this->reconfigureDot();
+        $this->reconfigure();
+        $this->restartWorkers();
 
         $startJobId = Utils::getJobId();
 
@@ -73,7 +121,7 @@ class FeederBatchJob implements ShouldQueue
             $job = new WorkJob();
             $job->runningTime = $mean <= 0 ? -1 : $rand->gaussianRandom($mean, $stddev);
             $job->probabilityOfClone = $cloneProbab;
-            $job->onConnection($workerConnection)
+            $job->onConnection($this->workerConnection)
                 ->onQueue($workerQueue);
 
             if (!$this->beans){
@@ -125,5 +173,52 @@ class FeederBatchJob implements ShouldQueue
         Log::info('Total running time: ' . $elapsed
             . ' it is ' . $jobsPerSecond
             . ' jobs per second, numIds: ' . $numIds);
+    }
+
+    protected function restartWorkers(){
+        Log::info('Restarting all queue workers...');
+        Artisan::call('queue:restart');
+
+        Log::info('Waiting for restart ...');
+        sleep(10);
+    }
+
+    protected function reconfigureDot(){
+        $settings = [];
+        if ($this->delMark !== null){
+            $settings[] = ['key' => 'B_JOB_DELETE_MARK', 'value' => $this->delMark];
+        }
+        if ($this->delTsxRetry !== null){
+            $settings[] = ['key' => 'DELETE_TSX_RETRY', 'value' => $this->delTsxRetry];
+        }
+        if ($this->delTsxFetch !== null){
+            $settings[] = ['key' => 'DELETE_TSX_FETCH', 'value' => $this->delTsxFetch];
+        }
+        if (!empty($settings)){
+            DotenvEditor::setKeys($settings);
+            DotenvEditor::save();
+        }
+    }
+
+    protected function reconfigure(){
+        $workerConnectionLow = strtolower($this->workerConnection);
+        if (Str::contains($workerConnectionLow, ['beans'])){
+            $this->beans = true;
+            Log::info('Beanstalkd queueing');
+
+        } elseif (Str::contains($workerConnectionLow, ['optim'])){
+            $this->queueInstance->deleteFetch = $this->delTsxFetch ?? config('benchmark.db_delete_tsx');
+            Log::info('Optimistic queueing');
+
+        } elseif (Str::contains($workerConnectionLow, ['pess'])) {
+            $this->queueInstance->deleteFetch = $this->delTsxFetch ?? config('benchmark.db_delete_tsx');
+            $this->queueInstance->deleteRetry = $this->delTsxRetry ?? config('benchmark.db_delete_tsx_retry');
+            $this->queueInstance->deleteMark = $this->delMark ?? config('benchmark.job_delete_mark');
+            Log::info('Pessimistic queueing');
+
+        } else {
+            Log::info('Unknown queueing');
+
+        }
     }
 }

@@ -20,7 +20,14 @@ class FeedJobs extends Command
     protected $signature = 'app:feedJobs
                                 {--cron : started by cron}
                                 {--sync : synchronous processing}
-                                {--batch : batch job pre-generation}';
+                                {--batch : batch job pre-generation}
+                                {--conn= : Override queue connection for workers, 0=pess, 1=opt, 2=beans}
+                                {--del-tsx-fetch= : Fetch before delete}
+                                {--del-tsx-retry= : Delete retry counts}
+                                {--del-mark= : Delete mark 2stage}
+                                {--work-clone= : Clonning probability}
+                                {--work-mean= : Worker sleep mean time milliseconds}
+                                {--verify=false : Verify correctness by job counting, slow}';
 
     /**
      * The console command description.
@@ -60,6 +67,25 @@ class FeedJobs extends Command
      */
     protected function startBatchJob(){
         $job = new FeederBatchJob();
+        $conn = $this->option('conn');
+
+        if ($conn === 0 || $conn === '0'){
+            $job->conn = 'ph4DBPess';
+        } elseif ($conn === 1 || $conn === '1'){
+            $job->conn = 'ph4DBOptim';
+        } elseif ($conn === 2 || $conn === '2'){
+            $job->conn = 'beanstalkd';
+        } else {
+            $job->conn = $conn;
+        }
+
+        $job->delTsxFetch = $this->option('del-tsx-fetch');
+        $job->delTsxRetry = $this->option('del-tsx-retry');
+        $job->delMark = $this->option('del-mark');
+        $job->workClone = $this->option('work-clone');
+        $job->workMean = $this->option('work-mean');
+        $job->verify = $this->option('verify');
+
         $job->onConnection('sync')
             ->onQueue(null);
         dispatch($job);
