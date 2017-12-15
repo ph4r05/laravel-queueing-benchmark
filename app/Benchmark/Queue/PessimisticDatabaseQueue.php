@@ -109,16 +109,17 @@ class PessimisticDatabaseQueue extends DatabaseQueue implements QueueContract
             });
         }
 
-        if ($this->deleteFetch){
-            $this->database->transaction(function () use ($queue, $id) {
-                if ($this->database->table($this->table)->lockForUpdate()->find($id)) {
-                    $this->database->table($this->table)->where('id', $id)->delete();
-                }
-            }, $this->deleteRetry > 0 ? $this->deleteRetry : 1);
+        try {
+            if ($this->deleteFetch) {
+                $this->database->transaction(function () use ($queue, $id) {
+                    if ($this->database->table($this->table)->lockForUpdate()->find($id)) {
+                        $this->database->table($this->table)->where('id', $id)->delete();
+                    }
+                }, $this->deleteRetry > 0 ? $this->deleteRetry : 1);
 
-        } else {
-            try {
-                if ($this->deleteRetry <= 0){
+            } else {
+
+                if ($this->deleteRetry <= 0) {
                     $this->database->table($this->table)->where('id', $id)->delete();
 
                 } else {
@@ -126,10 +127,9 @@ class PessimisticDatabaseQueue extends DatabaseQueue implements QueueContract
                         $this->database->table($this->table)->where('id', $id)->delete();
                     }, $this->deleteRetry);
                 }
-
-            } catch(\Throwable $e){
-                Log::error('Probably deadlock: ' . $e->getMessage());
             }
+        } catch (\Throwable $e) {
+            Log::error('Probably deadlock: ' . $e->getMessage());
         }
     }
 
