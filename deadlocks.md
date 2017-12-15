@@ -14,6 +14,13 @@ set global innodb_lock_wait_timeout=1000;
 set innodb_lock_wait_timeout=1000;
 ```
 
+Index experimenting
+
+```sql
+alter table laravel.jobs drop index jobs_queue_index;
+alter table jobs add index `jobs_queue_index` (`queue`); 
+```
+
 ### InnoDB transaction status
 
 InnoDB transaction status:
