@@ -32,6 +32,6 @@ class CreateJobsOptimTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jobs');
+        Schema::dropIfExists('jobs_optim');
     }
 }
