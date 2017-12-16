@@ -10,6 +10,7 @@ use Illuminate\Queue\DatabaseQueue;
 use Illuminate\Contracts\Queue\Queue as QueueContract;
 use Illuminate\Queue\Jobs\DatabaseJob;
 use Illuminate\Queue\Jobs\DatabaseJobRecord;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
 class OptimisticDatabaseQueue extends DatabaseQueue implements QueueContract
@@ -24,6 +25,18 @@ class OptimisticDatabaseQueue extends DatabaseQueue implements QueueContract
     public $deleteFetch = false;
 
     /**
+     * Job fetch strategy
+     * @var int
+     */
+    public $windowStrategy = 0;
+
+    /**
+     * Number of parallel workers / size of the window
+     * @var int
+     */
+    public $numWorkers = 1;
+
+    /**
      * Create a new database queue instance.
      *
      * @param Connection $database
@@ -36,6 +49,8 @@ class OptimisticDatabaseQueue extends DatabaseQueue implements QueueContract
     {
         parent::__construct($database, $table, $default, $retryAfter);
         $this->deleteFetch = $config['deleteFetch'] ?? config('benchmark.db_delete_tsx');
+        $this->numWorkers = $config['numWorkers'] ?? config('benchmark.num_workers');
+        $this->windowStrategy = $config['windowStrategy'] ?? config('benchmark.optim_window_strategy');
     }
 
     /**
@@ -58,6 +73,37 @@ class OptimisticDatabaseQueue extends DatabaseQueue implements QueueContract
             'payload' => $payload,
             'version' => 0
         ];
+    }
+
+    /**
+     * Picks job from the candidates for the processing.
+     * @param Collection $jobs
+     * @return mixed
+     */
+    protected function pickJob($jobs){
+        $cnt = $jobs->count();
+
+        if ($cnt == 1 || $this->windowStrategy == 0){
+            return $jobs[0];
+        }
+
+        // Low 2 bits encode the probabilistic
+        // method for choosing one job out of N
+        if (($this->windowStrategy & 3) == 1){
+            // Uniform pick
+            return $jobs[mt_rand(0, $cnt-1)];
+
+        } else if (($this->windowStrategy & 3) == 2){
+            // Exp. pick
+            for($i=0; $i<$cnt;$i++){
+                if (mt_rand(0,1) == 0){
+                    return $jobs[$i];
+                }
+            }
+            return $jobs[$cnt-1];
+        }
+
+        return $jobs[0];
     }
 
     /**
@@ -86,19 +132,34 @@ class OptimisticDatabaseQueue extends DatabaseQueue implements QueueContract
         // can sleep(). Thus we have to attempt to claim jobs until there are some.
         $job = null;
         $ctr=0;
-        do {
-            if ($job = $this->getNextAvailableJob($queue)) {
 
-                // job is not null, try to claim it
-                $jobClaimed = $this->marshalJob($queue, $job);
-                if (!empty($jobClaimed)) {
-                    // job was successfully claimed, return it.
-                    //if ($ctr>0)Log::info('  .. Ctr: ' . $ctr);
-                    return $jobClaimed;
-                } else {
-                    // Log::debug('Job preempted');
-                    $ctr+=1;
-                }
+        $numJobs = $this->windowStrategy > 0 ? $this->numWorkers : 1;
+        if ($this->windowStrategy > 3){
+            $numJobs = ceil($this->numWorkers * 1.5);
+        } else if ($this->windowStrategy > 7){
+            $numJobs = ceil($this->numWorkers * 2);
+        }
+
+        do {
+            // Get set of firts N available jobs
+            $jobs = $this->getNextAvailableJobs($queue, $numJobs);
+            if ($jobs->isEmpty()){
+                return null;
+            }
+
+            // Random pick from the jobs, depending on the strategy
+            // Reduces job preemption, worker pick randomly.
+            $job = new DatabaseJobRecord((object) $this->pickJob($jobs));
+
+            // job is not null, try to claim it
+            $jobClaimed = $this->marshalJob($queue, $job);
+            if (!empty($jobClaimed)) {
+                // job was successfully claimed, return it.
+                //if ($ctr>0)Log::info('  .. Ctr: ' . $ctr);
+                return $jobClaimed;
+            } else {
+                //Log::debug('Job preempted');
+                $ctr+=1;
             }
 
         } while($job !== null);
@@ -110,20 +171,22 @@ class OptimisticDatabaseQueue extends DatabaseQueue implements QueueContract
      * Get the next available job for the queue.
      *
      * @param  string|null  $queue
-     * @return \Illuminate\Queue\Jobs\DatabaseJobRecord|null
+     * @return \Illuminate\Support\Collection
      */
-    protected function getNextAvailableJob($queue)
+    protected function getNextAvailableJobs($queue, $limit=1)
     {
-        $job = $this->database->table($this->table)
+        $jobs = $this->database->table($this->table)
             ->where('queue', $this->getQueue($queue))
             ->where(function ($query) {
                 $this->isAvailable($query);
                 $this->isReservedButExpired($query);
             })
             ->orderBy('id', 'asc')
-            ->first();
+            ->limit($limit)
+            ->get(); //->first();
 
-        return $job ? new DatabaseJobRecord((object) $job) : null;
+        return $jobs;
+        //return $job ? new DatabaseJobRecord((object) $job) : null;
     }
 
     /**

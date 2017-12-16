@@ -28,7 +28,8 @@ class FeedJobs extends Command
                                 {--del-mark= : Delete mark 2stage}
                                 {--work-clone= : Clonning probability}
                                 {--work-mean= : Worker sleep mean time milliseconds}
-                                {--verify=false : Verify correctness by job counting, slow}';
+                                {--window-strategy= : Optimistic windowing strategy}
+                                {--verify= : Verify correctness by job counting, slow}';
 
     /**
      * The console command description.
@@ -86,6 +87,7 @@ class FeedJobs extends Command
         $job->delMark = $this->option('del-mark');
         $job->workClone = $this->option('work-clone');
         $job->workMean = $this->option('work-mean');
+        $job->windowStrategy = $this->option('window-strategy');
         $job->verify = $this->option('verify');
 
         $job->onConnection('sync')

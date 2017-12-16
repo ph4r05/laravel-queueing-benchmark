@@ -4,8 +4,10 @@ namespace App\Jobs;
 
 use App\Benchmark\Random\SystemRand;
 use App\Benchmark\Utils;
+use App\Protocol;
 use Illuminate\Foundation\Application;
 use Illuminate\Bus\Queueable;
+use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\QueueManager;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -62,6 +64,12 @@ class FeederBatchJob implements ShouldQueue
     public $workMean;
 
     /**
+     * Optimistic window strategy
+     * @var int
+     */
+    public $windowStrategy = 0;
+
+    /**
      * Verify correctness
      * @var
      */
@@ -70,13 +78,14 @@ class FeederBatchJob implements ShouldQueue
     /**
      * @var boolean
      */
-    protected $beans;
+    protected $beans = false;
 
     /**
      * @var boolean
      */
-    protected $optim;
+    protected $optim = false;
 
+    protected $numWorkers;
     protected $queueManager;
     protected $queueInstance;
     protected $workerConnection;
@@ -113,6 +122,9 @@ class FeederBatchJob implements ShouldQueue
         $batchSize = intval($this->batchSize ?? config('benchmark.job_batch_size'));
         $workerQueue = config('benchmark.job_worker_queue');
         $this->workerConnection = $this->conn ?? config('benchmark.job_working_connection');
+        $this->numWorkers = intval(config('benchmark.num_workers'));
+        $this->windowStrategy = intval($this->windowStrategy ?? intval(config('benchmark.optim_window_strategy')));
+        $this->verify = Utils::bool($this->verify ?? intval(config('benchmark.verify_queueing')));
 
         $this->queueManager = $queueManager;
         $this->queueInstance = $queueManager->connection($this->workerConnection);
@@ -121,6 +133,7 @@ class FeederBatchJob implements ShouldQueue
             . '; mark: ' . ($deleteMark ? 'Y' : 'N')
             . '; cloneP: ' . var_export($cloneProbab, true)
             . '; mean: ' . var_export($mean, true)
+            . '; verify: ' . var_export($this->verify, true)
         );
 
         // Reconfigure dotenv
@@ -128,6 +141,7 @@ class FeederBatchJob implements ShouldQueue
         $this->reconfigure();
 
         Utils::deleteJobs($this->optim);
+        $this->cleanProtocol();
         $this->restartWorkers();
 
         $startJobId = Utils::getJobId($this->optim);
@@ -192,6 +206,20 @@ class FeederBatchJob implements ShouldQueue
         Log::info('Total running time: ' . $elapsed
             . ' it is ' . $jobsPerSecond
             . ' jobs per second, numIds: ' . $numIds);
+
+        $this->verifyProtocol();
+    }
+
+    protected function verifyProtocol(){
+        if (!$this->verify){
+            return;
+        }
+
+
+    }
+
+    protected function cleanProtocol(){
+        DB::table(Protocol::TABLE)->delete();
     }
 
     protected function restartWorkers(){
@@ -213,6 +241,12 @@ class FeederBatchJob implements ShouldQueue
         if ($this->delTsxFetch !== null){
             $settings[] = ['key' => 'DELETE_TSX_FETCH', 'value' => $this->delTsxFetch];
         }
+        if ($this->windowStrategy !== null){
+            $settings[] = ['key' => 'B_OPTIM_WINDOW_STRATEGY', 'value' => $this->windowStrategy];
+        }
+        if ($this->verify !== null){
+            $settings[] = ['key' => 'B_VERIFY_QUEUEING', 'value' => $this->verify];
+        }
         if (!empty($settings)){
             DotenvEditor::setKeys($settings);
             DotenvEditor::save();
@@ -228,8 +262,14 @@ class FeederBatchJob implements ShouldQueue
         } elseif (Str::contains($workerConnectionLow, ['optim'])){
             $this->optim = true;
             $this->queueInstance->deleteFetch = filter_var($this->delTsxFetch ?? config('benchmark.db_delete_tsx'), FILTER_VALIDATE_BOOLEAN);
+            $this->queueInstance->numWorkers = $this->numWorkers;
+            $this->queueInstance->windowStrategy = $this->windowStrategy;
+
             Log::info('Optimistic queueing '
-                . ', deleteFetch: ' . var_export($this->queueInstance->deleteFetch, true));
+                . ', deleteFetch: ' . var_export($this->queueInstance->deleteFetch, true)
+                . ', numWorkers: ' . var_export($this->queueInstance->numWorkers, true)
+                . ', windowStrategy: ' . var_export($this->queueInstance->windowStrategy, true)
+            );
 
         } elseif (Str::contains($workerConnectionLow, ['pess'])) {
             $this->queueInstance->deleteFetch = filter_var($this->delTsxFetch ?? config('benchmark.db_delete_tsx'), FILTER_VALIDATE_BOOLEAN);
