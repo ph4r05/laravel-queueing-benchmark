@@ -68,14 +68,12 @@ class PessimisticDatabaseQueue extends DatabaseQueue implements QueueContract
             if ($job = $this->getNextAvailableJob($queue)) {
 
                     if ($this->deleteMark && $job->delete_mark) {
-                    Log::info('...delete mark: ' . $job->id);
-                        $job = new DatabaseJob($this->container, $this, $job, $this->connectionName, $queue);
-                        $job->delete();
+                        $this->deleteJob($job->id);
                         return -1; // will trigger another load
 
                     } else {
-                return $this->marshalJob($queue, $job);
-            }
+                        return $this->marshalJob($queue, $job);
+                    }
                 }
 
             return null;
@@ -114,6 +112,7 @@ class PessimisticDatabaseQueue extends DatabaseQueue implements QueueContract
             $this->database->transaction(function () use ($queue, $id) {
                 $this->database->table($this->table)->where('id', $id)->update(['delete_mark' => 1]);
             });
+            //return;
         }
 
         try {
@@ -126,17 +125,26 @@ class PessimisticDatabaseQueue extends DatabaseQueue implements QueueContract
 
             } else {
 
-                if ($this->deleteRetry <= 0) {
-                    $this->database->table($this->table)->where('id', $id)->delete();
-
-                } else {
-                    $this->database->transaction(function () use ($queue, $id) {
-                        $this->database->table($this->table)->where('id', $id)->delete();
-                    }, $this->deleteRetry);
-                }
+                $this->deleteJob($id);
             }
         } catch (\Throwable $e) {
             Log::error('Probably deadlock: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * @param $id
+     * @throws \Exception
+     * @throws \Throwable
+     */
+    protected function deleteJob($id){
+        if ($this->deleteRetry <= 0) {
+            $this->database->table($this->table)->where('id', $id)->delete();
+
+        } else {
+            $this->database->transaction(function () use ($id) {
+                $this->database->table($this->table)->where('id', $id)->delete();
+            }, $this->deleteRetry);
         }
     }
 
