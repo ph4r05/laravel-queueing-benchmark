@@ -207,7 +207,16 @@ class FeederBatchJob implements ShouldQueue
             return;
         }
 
-        $proto = Protocol::query()->orderBy('id')->get()->pluck('jid')->values();
+        $proto = Protocol::query()->orderBy('id')->get();
+        $workload = $proto->groupBy(function($item, $key){
+            return $item->pid;
+        })->map(function($item, $key){
+            return [$key, count($item)];
+        })->sortByDesc(function($item, $key){
+            return $item[1];
+        })->values();
+
+        $proto = $proto->pluck('jid')->values();
         $protoUnique = $proto->unique()->values();
         $startJobId = $proto->min();
 
@@ -230,8 +239,8 @@ class FeederBatchJob implements ShouldQueue
             return $item;
         })->map(function($item, $key){
             return [$key, count($item)];
-        })->sortByDesc(function($item, $key){
-            return $item;
+        })->sortBy(function($item, $key){
+            return $item[0];
         })->values();
 
         Log::info('Counts: ' . $counts->toJson());
@@ -240,6 +249,23 @@ class FeederBatchJob implements ShouldQueue
         Log::info('Top difs: ' . $topDiffs->toJson());
         Log::info('Protocol entries: ' . $proto->count());
         Log::info('Protocol unique: ' . $protoUnique->count());
+
+        $duplicities = $proto->groupBy(function($item, $key){
+            return $item;
+        })->map(function($item, $key){
+            return count($item);
+        })->reject(function($item, $key){
+            return $item <= 1;
+        })->values()->groupBy(function($item, $key){
+            return $item;
+        })->map(function($item, $key){
+            return [$key, count($item)];
+        })->sortBy(function($item, $key){
+            return $item[0];
+        })->values();
+        Log::info('Duplicity run: ' . $duplicities->toJson());
+
+        Log::info('Workload distribution: ' . $workload->toJson());
     }
 
     protected function cleanProtocol(){
