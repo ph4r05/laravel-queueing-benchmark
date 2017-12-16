@@ -18,7 +18,6 @@ class CreateProtocolTable extends Migration
             $table->bigInteger('tstamp')->nullable();
             $table->integer('pid')->nullable();
             $table->bigInteger('jid');
-            $table->bigInteger('tstamp_recv')->nullable();
         });
     }
 
