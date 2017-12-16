@@ -68,14 +68,14 @@ return [
             'driver' => 'ph4DBOptim',
             'table' => 'jobs_optim',
             'queue' => 'default',
-            'retry_after' => 90,
+            'retry_after' => 4,
         ],
 
         'ph4DBPess' => [
             'driver' => 'ph4DBPess',
             'table' => 'jobs',
             'queue' => 'default',
-            'retry_after' => 90,
+            'retry_after' => 4,
         ],
 
     ],
