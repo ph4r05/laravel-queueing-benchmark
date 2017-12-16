@@ -207,23 +207,24 @@ class FeederBatchJob implements ShouldQueue
             . ' it is ' . $jobsPerSecond
             . ' jobs per second, numIds: ' . $numIds);
 
-        $this->verifyProtocol($startJobId);
+        $this->verifyProtocol();
     }
 
-    protected function verifyProtocol($startJobId){
+    protected function verifyProtocol(){
         if (!$this->verify){
             return;
         }
 
         $proto = Protocol::query()->orderBy('id')->get()->pluck('jid')->values();
         $protoUnique = $proto->unique()->values();
+        $startJobId = $proto->min();
 
         // Ordering analysis on proto.
         $len = $proto->count();
         $diffs = [];
 
         for($i=0; $i < $len; $i++){
-            $diffs[] = abs($startJobId + $i + 1 - $proto[$i]);
+            $diffs[] = abs($startJobId + $i - $proto[$i]);
         }
 
         $diffs = collect($diffs);
@@ -233,6 +234,18 @@ class FeederBatchJob implements ShouldQueue
             . ', median: ' . $diffs->median()
         );
 
+        $counts = $diffs->groupBy(function($item, $key){
+            return $item;
+        })->map(function($item, $key){
+            return [$key, count($item)];
+        })->sortByDesc(function($item, $key){
+            return $item;
+        })->values();
+
+        Log::info('Counts: ' . $counts->toJson());
+
+        $topDiffs = $diffs->sort()->reverse()->take(40)->values();
+        Log::info('Top difs: ' . $topDiffs->toJson());
         Log::info('Protocol entries: ' . $proto->count());
         Log::info('Protocol unique: ' . $protoUnique->count());
     }
