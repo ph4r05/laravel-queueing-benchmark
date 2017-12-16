@@ -29,7 +29,8 @@ class FeedJobs extends Command
                                 {--work-clone= : Clonning probability}
                                 {--work-mean= : Worker sleep mean time milliseconds}
                                 {--window-strategy= : Optimistic windowing strategy}
-                                {--verify= : Verify correctness by job counting, slow}';
+                                {--verify= : Verify correctness by job counting, slower}
+                                {--repeat=1 : Number of repeats for stats}';
 
     /**
      * The console command description.
@@ -89,6 +90,7 @@ class FeedJobs extends Command
         $job->workMean = $this->option('work-mean');
         $job->windowStrategy = $this->option('window-strategy');
         $job->verify = $this->option('verify');
+        $job->repeat = $this->option('repeat');
 
         $job->onConnection('sync')
             ->onQueue(null);

@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Benchmark\Random\SystemRand;
 use App\Benchmark\Utils;
 use App\Protocol;
+use Illuminate\Contracts\Queue\Queue;
 use Illuminate\Foundation\Application;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\Events\JobProcessing;
@@ -16,6 +17,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Jackiedo\DotenvEditor\Facades\DotenvEditor;
 
@@ -76,6 +78,12 @@ class FeederBatchJob implements ShouldQueue
     public $verify;
 
     /**
+     * Repeat the test given number of times
+     * @var
+     */
+    public $repeat;
+
+    /**
      * @var boolean
      */
     protected $beans = false;
@@ -85,10 +93,31 @@ class FeederBatchJob implements ShouldQueue
      */
     protected $optim = false;
 
-    protected $numWorkers;
+    /**
+     * @var QueueManager
+     */
     protected $queueManager;
+    protected $app;
+    protected $runsDisk;
+
+    /**
+     * @var Queue
+     */
     protected $queueInstance;
+    protected $numWorkers;
+    protected $workerQueue;
     protected $workerConnection;
+
+    /**
+     * @var SystemRand
+     */
+    protected $rand;
+    protected $stddev;
+    protected $mean;
+    protected $cloneProbab;
+    protected $deleteMark;
+
+    protected $testResults;
 
     /**
      * Create a new job instance.
@@ -106,33 +135,20 @@ class FeederBatchJob implements ShouldQueue
      * @param Application $app
      * @param QueueManager $queueManager
      * @return void
-     * @throws \App\Benchmark\Random\RandException
      * @throws \Exception
      */
     public function handle(Application $app, QueueManager $queueManager)
     {
         Log::info('Main feeding job started');
-
-        $rand = new SystemRand();
-        $stddev = floatval(config('benchmark.job_stdev_time'));
-        $mean = floatval($this->workMean ?? config('benchmark.job_mean_time'));
-        $cloneProbab = floatval($this->workClone ?? config('benchmark.job_clone_probability'));
-        $deleteMark = filter_var($this->delMark ?? config('benchmark.job_delete_mark'), FILTER_VALIDATE_BOOLEAN);
-
-        $batchSize = intval($this->batchSize ?? config('benchmark.job_batch_size'));
-        $workerQueue = config('benchmark.job_worker_queue');
-        $this->workerConnection = $this->conn ?? config('benchmark.job_working_connection');
-        $this->numWorkers = intval(config('benchmark.num_workers'));
-        $this->windowStrategy = intval($this->windowStrategy ?? intval(config('benchmark.optim_window_strategy')));
-        $this->verify = Utils::bool($this->verify ?? intval(config('benchmark.verify_queueing')));
-
+        $this->app = $app;
         $this->queueManager = $queueManager;
-        $this->queueInstance = $queueManager->connection($this->workerConnection);
-        $workerQueueInstance = $this->queueInstance;
-        Log::info('Worker queue: ' . $workerQueueInstance->getConnectionName()
-            . '; mark: ' . ($deleteMark ? 'Y' : 'N')
-            . '; cloneP: ' . var_export($cloneProbab, true)
-            . '; mean: ' . var_export($mean, true)
+        $this->initSettings();
+        $timeStart = time();
+
+        Log::info('Worker queue: ' . $this->queueInstance->getConnectionName()
+            . '; mark: ' . ($this->deleteMark ? 'Y' : 'N')
+            . '; cloneP: ' . var_export($this->cloneProbab, true)
+            . '; mean: ' . var_export($this->mean, true)
             . '; verify: ' . var_export($this->verify, true)
         );
 
@@ -142,20 +158,117 @@ class FeederBatchJob implements ShouldQueue
 
         Utils::deleteJobs($this->optim);
         $this->cleanProtocol();
+
         $this->restartWorkers();
 
+        // The test
+        for($i=0; $i < $this->repeat; $i++){
+            Log::info('------------------ Test run ' . ($i+1) . '/' . $this->repeat);
+
+            Utils::deleteJobs($this->optim);
+            $this->cleanProtocol();
+
+            $res = $this->benchmark();
+            $this->testResults[] = $res;
+        }
+
+        $fname = sprintf('run_conn%d_dm%d_dtsx%d_dretry%d_batch%d_window%d_verify%d_%s.json',
+            $this->connIdx(),
+            $this->deleteMark,
+            $this->delTsxFetch,
+            $this->delTsxRetry,
+            $this->batchSize,
+            $this->windowStrategy,
+            $this->verify,
+            time()
+        );
+
+        $this->runsDisk->put($fname, json_encode([
+            'timeStart' => $timeStart,
+            'settings' => [
+                'batchSize' => $this->batchSize,
+                'conn' => $this->conn,
+                'delTsxFetch' => $this->delTsxFetch,
+                'delTsxRetry' => $this->delTsxRetry,
+                'delMark' => $this->delMark,
+                'workClone' => $this->workClone,
+                'workMean' => $this->workMean,
+                'windowStrategy' => $this->windowStrategy,
+                'verify' => $this->verify,
+                'repeat' => $this->repeat,
+                'beans' => $this->beans,
+                'optim' => $this->optim,
+                'numWorkers' => $this->numWorkers,
+                'workerQueue' => $this->workerQueue,
+                'workerConnection' => $this->workerConnection,
+                'stddev' => $this->stddev,
+                'mean' => $this->mean,
+                'cloneProbab' => $this->cloneProbab,
+                'deleteMark' => $this->deleteMark,
+            ],
+            'runs' => $this->testResults
+        ], JSON_PRETTY_PRINT));
+    }
+
+    /**
+     * Connection code
+     * @return mixed
+     */
+    protected function connIdx(){
+        if (Str::contains($this->conn, ['Pess'])){
+            return 0;
+        } elseif (Str::contains($this->conn, ['Opt'])){
+            return 1;
+        } else if (Str::contains($this->conn, 'beans')){
+            return 2;
+        } else {
+            return $this->conn;
+        }
+    }
+
+    /**
+     * Initialize input settings
+     * Reads job input parameters, env file.
+     */
+    protected function initSettings(){
+        $this->runsDisk = Storage::disk('runs');
+
+        $this->rand = new SystemRand();
+        $this->stddev = floatval(config('benchmark.job_stdev_time'));
+        $this->mean = floatval($this->workMean ?? config('benchmark.job_mean_time'));
+        $this->cloneProbab = floatval($this->workClone ?? config('benchmark.job_clone_probability'));
+        $this->deleteMark = Utils::bool($this->delMark ?? config('benchmark.job_delete_mark'));
+        $this->delTsxFetch = Utils::bool($this->delTsxFetch ?? config('benchmark.db_delete_tsx'));
+        $this->delTsxRetry = intval($this->delTsxRetry ?? config('benchmark.db_delete_tsx_retry'));
+
+        $this->batchSize = intval($this->batchSize ?? config('benchmark.job_batch_size'));
+        $this->workerQueue = config('benchmark.job_worker_queue');
+        $this->workerConnection = $this->conn ?? config('benchmark.job_working_connection');
+        $this->numWorkers = intval(config('benchmark.num_workers'));
+        $this->windowStrategy = intval($this->windowStrategy ?? intval(config('benchmark.optim_window_strategy')));
+        $this->verify = Utils::bool($this->verify ?? intval(config('benchmark.verify_queueing')));
+        $this->repeat = intval($this->repeat) ?? 1;
+
+        $this->queueInstance = $this->queueManager->connection($this->workerConnection);
+        $this->testResults = [];
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function benchmark(){
         $startJobId = Utils::getJobId($this->optim);
 
-        Log::info('Queue size: ' . $workerQueueInstance->size());
-        Log::info('Going to generate jobs: ' . $batchSize
+        Log::info('Queue size: ' . $this->queueInstance->size());
+        Log::info('Going to generate jobs: ' . $this->batchSize
             . ', start job id: ' . $startJobId);
 
-        for($i=0; $i<$batchSize; $i++){
+        for($i=0; $i<$this->batchSize; $i++){
             $job = new WorkJob();
-            $job->runningTime = $mean <= 0 ? -1 : $rand->gaussianRandom($mean, $stddev);
-            $job->probabilityOfClone = $cloneProbab;
+            $job->runningTime = $this->mean <= 0 ? -1 : $this->rand->gaussianRandom($this->mean, $this->stddev);
+            $job->probabilityOfClone = $this->cloneProbab;
             $job->onConnection($this->workerConnection)
-                ->onQueue($workerQueue);
+                ->onQueue($this->workerQueue);
 
             if (!$this->beans){
                 $job->delay(10000000);
@@ -165,7 +278,7 @@ class FeederBatchJob implements ShouldQueue
 
         // Schedule batch now
         if (!$this->beans) {
-            Log::info('Kickoff all ' . $batchSize . ' jobs in 3 seconds');
+            Log::info('Kickoff all ' . $this->batchSize . ' jobs in 3 seconds');
             sleep(3);
             DB::table(Utils::getJobTable($this->optim))->update(['available_at' => 0]);
         }
@@ -182,7 +295,7 @@ class FeederBatchJob implements ShouldQueue
             }
 
             $lastFetch = $curTime;
-            $jobs = $workerQueueInstance->size();
+            $jobs = $this->queueInstance->size();
             Log::info('Number of jobs:' . $jobs);
             if ($jobs == 0){
                 break;
@@ -194,15 +307,26 @@ class FeederBatchJob implements ShouldQueue
 
         $finish = microtime(true);
         $elapsed = $finish - $startTime;
-        $jobsPerSecond = $batchSize / floatval($elapsed);
+        $jobsPerSecond = $this->batchSize / floatval($elapsed);
         Log::info('Total running time: ' . $elapsed
             . ' it is ' . $jobsPerSecond
             . ' jobs per second, numIds: ' . $numIds);
 
-        $this->verifyProtocol();
+        $runResults = [
+            'elapsed' => $elapsed,
+            'jps' => $jobsPerSecond,
+            'numIds' => $numIds
+        ];
+
+        $this->verifyProtocol($runResults);
+        return $runResults;
     }
 
-    protected function verifyProtocol(){
+    /**
+     * Verification phase
+     * Checks the run protocol and computes stats about the run.
+     */
+    protected function verifyProtocol($runResults){
         if (!$this->verify){
             return;
         }
@@ -229,11 +353,6 @@ class FeederBatchJob implements ShouldQueue
         }
 
         $diffs = collect($diffs);
-        Log::info('Diffs avg: ' . $diffs->avg()
-            . ', min: ' . $diffs->min()
-            . ', max: ' . $diffs->max()
-            . ', median: ' . $diffs->median()
-        );
 
         $counts = $diffs->groupBy(function($item, $key){
             return $item;
@@ -243,12 +362,7 @@ class FeederBatchJob implements ShouldQueue
             return $item[0];
         })->values();
 
-        Log::info('Counts: ' . $counts->toJson());
-
         $topDiffs = $diffs->sort()->reverse()->take(40)->values();
-        Log::info('Top difs: ' . $topDiffs->toJson());
-        Log::info('Protocol entries: ' . $proto->count());
-        Log::info('Protocol unique: ' . $protoUnique->count());
 
         $duplicities = $proto->groupBy(function($item, $key){
             return $item;
@@ -263,15 +377,45 @@ class FeederBatchJob implements ShouldQueue
         })->sortBy(function($item, $key){
             return $item[0];
         })->values();
-        Log::info('Duplicity run: ' . $duplicities->toJson());
 
+        $runResults['diffs'] = [
+            'min' => $diffs->min(),
+            'avg' => $diffs->avg(),
+            'max' => $diffs->max(),
+            'med' => $diffs->median(),
+        ];
+        $runResults['counts'] = $counts;
+        $runResults['topDiffs'] = $topDiffs;
+        $runResults['protoEntries'] = $proto->count();
+        $runResults['protoUnique'] = $protoUnique->count();
+        $runResults['duplicities'] = $duplicities;
+        $runResults['workload'] = $workload;
+
+        Log::info('Diffs avg: ' . $runResults['diffs']['avg']
+            . ', min: ' . $runResults['diffs']['min']
+            . ', max: ' . $runResults['diffs']['max']
+            . ', median: ' . $runResults['diffs']['med']
+        );
+        Log::info('Counts: ' . $counts->toJson());
+        Log::info('Top difs: ' . $topDiffs->toJson());
+        Log::info('Protocol entries: ' . $proto->count());
+        Log::info('Protocol unique: ' . $protoUnique->count());
+        Log::info('Duplicity run: ' . $duplicities->toJson());
         Log::info('Workload distribution: ' . $workload->toJson());
+
+        return $runResults;
     }
 
+    /**
+     * Empties protocol table.
+     */
     protected function cleanProtocol(){
         DB::table(Protocol::TABLE)->delete();
     }
 
+    /**
+     * Simple worker restart with 10s sleep
+     */
     protected function restartWorkers(){
         Log::info('Restarting all queue workers...');
         Artisan::call('queue:restart');
@@ -280,6 +424,10 @@ class FeederBatchJob implements ShouldQueue
         sleep(10);
     }
 
+    /**
+     * Configure .env from the current settings.
+     * The point: Affects also the worker threads after the restart.
+     */
     protected function reconfigureDot(){
         $settings = [];
         if ($this->delMark !== null){
@@ -303,6 +451,9 @@ class FeederBatchJob implements ShouldQueue
         }
     }
 
+    /**
+     * Queue reconfiguration
+     */
     protected function reconfigure(){
         $workerConnectionLow = strtolower($this->workerConnection);
         if (Str::contains($workerConnectionLow, ['beans'])){
@@ -311,7 +462,7 @@ class FeederBatchJob implements ShouldQueue
 
         } elseif (Str::contains($workerConnectionLow, ['optim'])){
             $this->optim = true;
-            $this->queueInstance->deleteFetch = filter_var($this->delTsxFetch ?? config('benchmark.db_delete_tsx'), FILTER_VALIDATE_BOOLEAN);
+            $this->queueInstance->deleteFetch = $this->delTsxFetch;
             $this->queueInstance->numWorkers = $this->numWorkers;
             $this->queueInstance->windowStrategy = $this->windowStrategy;
 
@@ -322,9 +473,9 @@ class FeederBatchJob implements ShouldQueue
             );
 
         } elseif (Str::contains($workerConnectionLow, ['pess'])) {
-            $this->queueInstance->deleteFetch = filter_var($this->delTsxFetch ?? config('benchmark.db_delete_tsx'), FILTER_VALIDATE_BOOLEAN);
-            $this->queueInstance->deleteMark = filter_var($this->delMark ?? config('benchmark.job_delete_mark'), FILTER_VALIDATE_BOOLEAN);
-            $this->queueInstance->deleteRetry = intval($this->delTsxRetry ?? config('benchmark.db_delete_tsx_retry'));
+            $this->queueInstance->deleteFetch = $this->delTsxFetch;
+            $this->queueInstance->deleteMark = $this->deleteMark;
+            $this->queueInstance->deleteRetry = $this->delTsxRetry;
             Log::info('Pessimistic queueing '
                 . ', deleteFetch: ' . var_export($this->queueInstance->deleteFetch, true)
                 . ', deleteMark: ' . var_export($this->queueInstance->deleteMark, true)
