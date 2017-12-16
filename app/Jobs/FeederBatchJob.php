@@ -207,15 +207,34 @@ class FeederBatchJob implements ShouldQueue
             . ' it is ' . $jobsPerSecond
             . ' jobs per second, numIds: ' . $numIds);
 
-        $this->verifyProtocol();
+        $this->verifyProtocol($startJobId);
     }
 
-    protected function verifyProtocol(){
+    protected function verifyProtocol($startJobId){
         if (!$this->verify){
             return;
         }
 
+        $proto = Protocol::query()->orderBy('id')->get()->pluck('jid')->values();
+        $protoUnique = $proto->unique()->values();
 
+        // Ordering analysis on proto.
+        $len = $proto->count();
+        $diffs = [];
+
+        for($i=0; $i < $len; $i++){
+            $diffs[] = abs($startJobId + $i + 1 - $proto[$i]);
+        }
+
+        $diffs = collect($diffs);
+        Log::info('Diffs avg: ' . $diffs->avg()
+            . ', min: ' . $diffs->min()
+            . ', max: ' . $diffs->max()
+            . ', median: ' . $diffs->median()
+        );
+
+        Log::info('Protocol entries: ' . $proto->count());
+        Log::info('Protocol unique: ' . $protoUnique->count());
     }
 
     protected function cleanProtocol(){
