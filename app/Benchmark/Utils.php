@@ -99,4 +99,12 @@ class Utils
         return random_int($min, $max - 1) + (mt_rand(0, PHP_INT_MAX - 1) / PHP_INT_MAX );
     }
 
+    /**
+     * Transforms input to a boolean (string, num)
+     * @param $x
+     * @return mixed
+     */
+    public static function bool($x){
+        return filter_var($x, FILTER_VALIDATE_BOOLEAN);
+    }
 }
