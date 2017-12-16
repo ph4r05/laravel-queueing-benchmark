@@ -4,13 +4,30 @@ return [
 
     // Minimal size of the job size
     'job_pool_size' => env('B_JOB_POOL_SIZE', 20000),
+
+    // Size of the pregenerated work batch used for the benchmarking
     'job_batch_size' => env('B_JOB_BATCH_SIZE', 1000),
+
+    // Auto-Feeding strategy. Disabled by default, not implemented yet, complicated.
     'job_feeding' => env('B_FEEDING', false),
+
+    // Probability of a work unit clonning itself and enqueuing the clone. Benchmarking inserts.
     'job_clone_probability' => env('B_JOB_CLONE', 0),
 
+    // correctness verification
+    'verify_queueing' => env('B_VERIFY_QUEUEING', false),
+
+    // Do fetch before delete - original Laravel code has this set to true
     'db_delete_tsx' => env('DELETE_TSX_FETCH', false),
+
+    // Number of attempts for job delete in the transaction - deadlock handling
     'db_delete_tsx_retry' => env('DELETE_TSX_RETRY', 0),
+
+    // Use delete_mark two stage deletion with the pessimistic strategy.
     'job_delete_mark' => env('B_JOB_DELETE_MARK', false),
+
+    // Optimistic window strategy for job fetching
+    'optim_window_strategy' => env('B_OPTIM_WINDOW_STRATEGY', 0),
 
     // Number of spawned workers
     // Value used for work distribution. Does not influence number of started workers.
