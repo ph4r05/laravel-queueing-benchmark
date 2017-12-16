@@ -162,6 +162,7 @@ class FeederBatchJob implements ShouldQueue
         $this->restartWorkers();
 
         // The test
+        $jpsAvg = 0.0;
         for($i=0; $i < $this->repeat; $i++){
             Log::info('------------------ Test run ' . ($i+1) . '/' . $this->repeat);
 
@@ -169,18 +170,20 @@ class FeederBatchJob implements ShouldQueue
             $this->cleanProtocol();
 
             $res = $this->benchmark();
+            $jpsAvg += $res['jps'];
             $this->testResults[] = $res;
         }
 
-        $fname = sprintf('run_conn%d_dm%d_dtsx%d_dretry%d_batch%d_window%d_verify%d_%s.json',
+        $jpsAvg /= $this->repeat;
+        $fname = sprintf('run_%s_conn%d_dm%d_dtsx%d_dretry%d_batch%d_window%d_verify%d.json',
+            time(),
             $this->connIdx(),
             $this->deleteMark,
             $this->delTsxFetch,
             $this->delTsxRetry,
             $this->batchSize,
             $this->windowStrategy,
-            $this->verify,
-            time()
+            $this->verify
         );
 
         $this->runsDisk->put($fname, json_encode([
@@ -206,7 +209,8 @@ class FeederBatchJob implements ShouldQueue
                 'cloneProbab' => $this->cloneProbab,
                 'deleteMark' => $this->deleteMark,
             ],
-            'runs' => $this->testResults
+            'runs' => $this->testResults,
+            'jps_avg' => $jpsAvg,
         ], JSON_PRETTY_PRINT));
     }
 
@@ -318,17 +322,19 @@ class FeederBatchJob implements ShouldQueue
             'numIds' => $numIds
         ];
 
-        $this->verifyProtocol($runResults);
+        $runResults = $this->verifyProtocol($runResults);
         return $runResults;
     }
 
     /**
      * Verification phase
      * Checks the run protocol and computes stats about the run.
+     * @param $runResults
+     * @return
      */
     protected function verifyProtocol($runResults){
         if (!$this->verify){
-            return;
+            return $runResults;
         }
 
         $proto = Protocol::query()->orderBy('id')->get();
