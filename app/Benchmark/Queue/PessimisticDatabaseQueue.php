@@ -62,19 +62,26 @@ class PessimisticDatabaseQueue extends DatabaseQueue implements QueueContract
     {
         $queue = $this->getQueue($queue);
 
-        return $this->database->transaction(function () use ($queue) {
+        do {
+            $job = $this->database->transaction(function () use ($queue) {
+
             if ($job = $this->getNextAvailableJob($queue)) {
 
-                if ($job->delete_mark){
+                    if ($this->deleteMark && $job->delete_mark) {
                     Log::info('...delete mark: ' . $job->id);
-                    // TODO: $job->delete();
-                }
+                        $job = new DatabaseJob($this->container, $this, $job, $this->connectionName, $queue);
+                        $job->delete();
+                        return -1; // will trigger another load
 
+                    } else {
                 return $this->marshalJob($queue, $job);
             }
+                }
 
             return null;
         });
+        } while($this->deleteMark && $job === -1);
+        return $job;
     }
 
     /**

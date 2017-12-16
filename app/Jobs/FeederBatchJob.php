@@ -187,14 +187,6 @@ class FeederBatchJob implements ShouldQueue
             if ($jobs == 0){
                 break;
             }
-
-            if (!$this->beans && $deleteMark) {
-                try {
-                    DB::table(Utils::getJobTable($this->optim))->where('delete_mark', 1)->delete();
-                } catch (\Throwable $e) {
-                    // nah
-                }
-            }
         }
 
         $finalJobId = Utils::getJobId($this->optim) - 1;
