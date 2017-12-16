@@ -96,11 +96,12 @@ class OptimisticDatabaseQueue extends DatabaseQueue implements QueueContract
         } else if (($this->windowStrategy & 3) == 2){
             // Exp. pick
             for($i=0; $i<$cnt;$i++){
-                if (mt_rand(0,1) == 0){
+                if (mt_rand(0, 2) == 0){
                     return $jobs[$i];
                 }
             }
-            return $jobs[$cnt-1];
+            //return $jobs[$cnt-1];
+            return $jobs[0];
         }
 
         return $jobs[0];
@@ -135,7 +136,7 @@ class OptimisticDatabaseQueue extends DatabaseQueue implements QueueContract
 
         $numJobs = $this->windowStrategy > 0 ? $this->numWorkers : 1;
         if ($this->windowStrategy > 3){
-            $numJobs = ceil($this->numWorkers * 1.5);
+            $numJobs = ceil($this->numWorkers * 0.5);
         } else if ($this->windowStrategy > 7){
             $numJobs = ceil($this->numWorkers * 2);
         }
