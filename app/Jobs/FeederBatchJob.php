@@ -186,8 +186,9 @@ class FeederBatchJob implements ShouldQueue
             return;
         }
 
-        $fname = sprintf('run_%s_conn%d_dm%d_dtsx%d_dretry%d_batch%d_cl%s_window%d_verify%d.json',
+        $fname = sprintf('run_%s_%s_conn%d_dm%d_dtsx%d_dretry%d_batch%d_cl%s_window%d_verify%d.json',
             time(),
+            env('DB_CONNECTION'),
             $this->connIdx(),
             $this->deleteMark,
             $this->delTsxFetch,
@@ -202,6 +203,7 @@ class FeederBatchJob implements ShouldQueue
             'timeStart' => $timeStart,
             'settings' => [
                 'batchSize' => $this->batchSize,
+                'db_conn' => env('DB_CONNECTION'),
                 'conn' => $this->conn,
                 'delTsxFetch' => $this->delTsxFetch,
                 'delTsxRetry' => $this->delTsxRetry,
