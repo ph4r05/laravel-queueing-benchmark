@@ -85,64 +85,17 @@ Supervisor:
 
 ```
 echo '
-[program:laravelOptim]
+[program:laravel]
 process_name=%(program_name)s_%(process_num)02d
 directory=/var/www/laravel
-command=php /var/www/laravel/artisan app:work ph4DBOptim --queue=high,default,low --sleep=1 --tries=3
+command=php /var/www/laravel/artisan app:work --queue=high,default,low --sleep=1 --tries=3
 user=laravel
 numprocs=10
 autostart=true
 autorestart=true
-stderr_logfile=/var/log/laravel-opt.err.log
-stdout_logfile=/var/log/laravel-opt.out.log
-' | sudo tee /etc/supervisor/conf.d/laravelOptim.conf
-```
-
-
-```
-echo '
-[program:laravelPess]
-process_name=%(program_name)s_%(process_num)02d
-directory=/var/www/laravel
-command=php /var/www/laravel/artisan app:work ph4DBPess --queue=high,default,low --sleep=1 --tries=3
-user=laravel
-numprocs=10
-autostart=true
-autorestart=true
-stderr_logfile=/var/log/laravel-pess.err.log
-stdout_logfile=/var/log/laravel-pess.out.log
-' | sudo tee /etc/supervisor/conf.d/laravelPess.conf
-```
-
-```
-echo '
-[program:laravelBeans]
-process_name=%(program_name)s_%(process_num)02d
-directory=/var/www/laravel
-command=php /var/www/laravel/artisan app:work beanstalkd --queue=high,default,low --sleep=1 --tries=3
-user=laravel
-numprocs=10
-autostart=true
-autorestart=true
-stderr_logfile=/var/log/laravel-beans.err.log
-stdout_logfile=/var/log/laravel-beans.out.log
-' | sudo tee /etc/supervisor/conf.d/laravelBeans.conf
-```
-
-
-```
-echo '
-[program:laravelRedis]
-process_name=%(program_name)s_%(process_num)02d
-directory=/var/www/laravel
-command=php /var/www/laravel/artisan app:work redis --queue=high,default,low --sleep=1 --tries=3
-user=laravel
-numprocs=10
-autostart=true
-autorestart=true
-stderr_logfile=/var/log/laravel-redis.err.log
-stdout_logfile=/var/log/laravel-redis.out.log
-' | sudo tee /etc/supervisor/conf.d/laravelRedis.conf
+stderr_logfile=/var/log/laravel.err.log
+stdout_logfile=/var/log/laravel.out.log
+' | sudo tee /etc/supervisor/conf.d/laravel.conf
 ```
 
 Reconfigure supervisord:

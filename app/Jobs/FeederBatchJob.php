@@ -463,6 +463,9 @@ class FeederBatchJob implements ShouldQueue
      */
     protected function reconfigureDot(){
         $settings = [];
+        if ($this->workerConnection !== null){
+            $settings[] = ['key' => 'QUEUE_DRIVER', 'value' => $this->workerConnection];
+        }
         if ($this->delMark !== null){
             $settings[] = ['key' => 'B_JOB_DELETE_MARK', 'value' => $this->delMark];
         }
