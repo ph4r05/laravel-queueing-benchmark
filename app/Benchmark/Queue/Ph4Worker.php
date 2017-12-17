@@ -75,7 +75,7 @@ class Ph4Worker extends Worker
         // We could also capture \Events\JobProcessing
         if ($this->verify && method_exists($job, 'getJobId')){
             $proto = new Protocol([
-                'tstamp' => ceil(microtime(true) * 100000),
+                'tstamp' => intval(ceil(microtime(true) * 100000)),
                 'pid' => getmypid(),
                 'jid' => $job->getJobId(),
             ]);
