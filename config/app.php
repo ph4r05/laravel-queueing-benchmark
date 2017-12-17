@@ -163,11 +163,11 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Jackiedo\DotenvEditor\DotenvEditorServiceProvider::class,
 
         /*
          * Package Service Providers...
          */
+        Jackiedo\DotenvEditor\DotenvEditorServiceProvider::class,
 
         /*
          * Application Service Providers...
