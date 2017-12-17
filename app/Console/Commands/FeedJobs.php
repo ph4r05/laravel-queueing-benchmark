@@ -79,6 +79,8 @@ class FeedJobs extends Command
             $job->conn = 'ph4DBOptim';
         } elseif ($conn === 2 || $conn === '2'){
             $job->conn = 'beanstalkd';
+        } elseif ($conn === 3 || $conn === '3'){
+            $job->conn = 'redis';
         } else {
             $job->conn = $conn;
         }
