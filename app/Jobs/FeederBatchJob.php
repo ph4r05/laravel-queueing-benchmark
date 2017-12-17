@@ -175,13 +175,14 @@ class FeederBatchJob implements ShouldQueue
         }
 
         $jpsAvg /= $this->repeat;
-        $fname = sprintf('run_%s_conn%d_dm%d_dtsx%d_dretry%d_batch%d_window%d_verify%d.json',
+        $fname = sprintf('run_%s_conn%d_dm%d_dtsx%d_dretry%d_batch%d_cl%s_window%d_verify%d.json',
             time(),
             $this->connIdx(),
             $this->deleteMark,
             $this->delTsxFetch,
             $this->delTsxRetry,
             $this->batchSize,
+            $this->cloneProbab,
             $this->windowStrategy,
             $this->verify
         );
@@ -194,6 +195,7 @@ class FeederBatchJob implements ShouldQueue
                 'delTsxFetch' => $this->delTsxFetch,
                 'delTsxRetry' => $this->delTsxRetry,
                 'delMark' => $this->delMark,
+                'deleteMark' => $this->deleteMark,
                 'workClone' => $this->workClone,
                 'workMean' => $this->workMean,
                 'windowStrategy' => $this->windowStrategy,
@@ -207,7 +209,6 @@ class FeederBatchJob implements ShouldQueue
                 'stddev' => $this->stddev,
                 'mean' => $this->mean,
                 'cloneProbab' => $this->cloneProbab,
-                'deleteMark' => $this->deleteMark,
             ],
             'runs' => $this->testResults,
             'jps_avg' => $jpsAvg,
