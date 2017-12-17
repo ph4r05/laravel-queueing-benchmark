@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Console\Commands\DbChange;
+use App\Console\Commands\ChangeDb;
 use App\Console\Commands\FeedJobs;
 use App\Console\Commands\WorkCommand;
 use Illuminate\Console\Scheduling\Schedule;
@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         FeedJobs::class,
-        DbChange::class,
+        ChangeDb::class,
         WorkCommand::class,
     ];
 

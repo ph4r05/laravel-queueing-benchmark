@@ -11,14 +11,14 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Jackiedo\DotenvEditor\Facades\DotenvEditor;
 
-class DbChange extends Command
+class ChangeDb extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:dbChange
+    protected $signature = 'app:changeDb
                                 {--conn= : Override queue connection for workers, 0=mysql, 1=pgsql, 2=sqlite}';
 
     /**
