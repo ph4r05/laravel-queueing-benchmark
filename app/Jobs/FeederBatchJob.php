@@ -84,6 +84,12 @@ class FeederBatchJob implements ShouldQueue
     public $repeat;
 
     /**
+     * No json log
+     * @var
+     */
+    public $noJson;
+
+    /**
      * @var boolean
      */
     protected $beans = false;
@@ -175,6 +181,11 @@ class FeederBatchJob implements ShouldQueue
         }
 
         $jpsAvg /= $this->repeat;
+        Log::info('Tests finished, average jobs per second: ' . $jpsAvg);
+        if (Utils::bool($this->noJson)){
+            return;
+        }
+
         $fname = sprintf('run_%s_conn%d_dm%d_dtsx%d_dretry%d_batch%d_cl%s_window%d_verify%d.json',
             time(),
             $this->connIdx(),

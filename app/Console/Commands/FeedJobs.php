@@ -30,7 +30,8 @@ class FeedJobs extends Command
                                 {--work-mean= : Worker sleep mean time milliseconds}
                                 {--window-strategy= : Optimistic windowing strategy}
                                 {--verify= : Verify correctness by job counting, slower}
-                                {--repeat=1 : Number of repeats for stats}';
+                                {--repeat=1 : Number of repeats for stats}
+                                {--no-json= : Disable the json dump}';
 
     /**
      * The console command description.
@@ -91,6 +92,7 @@ class FeedJobs extends Command
         $job->windowStrategy = $this->option('window-strategy');
         $job->verify = $this->option('verify');
         $job->repeat = $this->option('repeat');
+        $job->noJson = $this->option('no-json');
 
         $job->onConnection('sync')
             ->onQueue(null);
