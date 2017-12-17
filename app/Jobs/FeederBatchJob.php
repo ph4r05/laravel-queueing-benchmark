@@ -97,6 +97,11 @@ class FeederBatchJob implements ShouldQueue
     /**
      * @var boolean
      */
+    protected $redis = false;
+
+    /**
+     * @var boolean
+     */
     protected $optim = false;
 
     /**
@@ -215,6 +220,7 @@ class FeederBatchJob implements ShouldQueue
                 'verify' => $this->verify,
                 'repeat' => $this->repeat,
                 'beans' => $this->beans,
+                'redis' => $this->redis,
                 'optim' => $this->optim,
                 'numWorkers' => $this->numWorkers,
                 'workerQueue' => $this->workerQueue,
@@ -283,6 +289,9 @@ class FeederBatchJob implements ShouldQueue
         Log::info('Going to generate jobs: ' . $this->batchSize
             . ', start job id: ' . $startJobId);
 
+        // Maintenance, app down - stop queue processing
+        Artisan::call('down');
+
         for($i=0; $i<$this->batchSize; $i++){
             $job = new WorkJob();
             $job->runningTime = $this->mean <= 0 ? -1 : $this->rand->gaussianRandom($this->mean, $this->stddev);
@@ -290,19 +299,21 @@ class FeederBatchJob implements ShouldQueue
             $job->onConnection($this->workerConnection)
                 ->onQueue($this->workerQueue);
 
-            if (!$this->beans){
+            if (!$this->beans && !$this->redis){
                 $job->delay(10000000);
             }
             dispatch($job);
         }
 
         // Schedule batch now
-        if (!$this->beans) {
+        if (!$this->beans && !$this->redis) {
             Log::info('Kickoff all ' . $this->batchSize . ' jobs in 3 seconds');
             sleep(3);
             DB::table(Utils::getJobTable($this->optim))->update(['available_at' => 0]);
         }
 
+        // maintenance, app up, enable queue processing
+        Artisan::call('up');
         $startTime = microtime(true);
 
         // Monitor, query on count each 10 sec.
@@ -481,6 +492,10 @@ class FeederBatchJob implements ShouldQueue
         if (Str::contains($workerConnectionLow, ['beans'])){
             $this->beans = true;
             Log::info('Beanstalkd queueing');
+
+        } elseif (Str::contains($workerConnectionLow, ['redis'])){
+            $this->redis = true;
+            Log::info('Redis queueing');
 
         } elseif (Str::contains($workerConnectionLow, ['optim'])){
             $this->optim = true;
