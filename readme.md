@@ -87,7 +87,7 @@ Supervisor:
 [program:laravelOptim]
 process_name=%(program_name)s_%(process_num)02d
 directory=/var/www/laravel
-command=php /var/www/laravel/artisan queue:work ph4DBOptim --queue=high,default,low --sleep=1 --tries=3
+command=php /var/www/laravel/artisan app:work ph4DBOptim --queue=high,default,low --sleep=1 --tries=3
 user=laravel
 numprocs=50
 autostart=true
@@ -101,7 +101,7 @@ stdout_logfile=/var/log/laravel-opt.out.log
 [program:laravelPess]
 process_name=%(program_name)s_%(process_num)02d
 directory=/var/www/laravel
-command=php /var/www/laravel/artisan queue:work ph4DBPess --queue=high,default,low --sleep=1 --tries=3
+command=php /var/www/laravel/artisan app:work ph4DBPess --queue=high,default,low --sleep=1 --tries=3
 user=laravel
 numprocs=50
 autostart=true
@@ -114,7 +114,7 @@ stdout_logfile=/var/log/laravel-pess.out.log
 [program:laravelBeans]
 process_name=%(program_name)s_%(process_num)02d
 directory=/var/www/laravel
-command=php /var/www/laravel/artisan queue:work beanstalkd --queue=high,default,low --sleep=1 --tries=3
+command=php /var/www/laravel/artisan app:work beanstalkd --queue=high,default,low --sleep=1 --tries=3
 user=laravel
 numprocs=50
 autostart=true
