@@ -17,7 +17,8 @@ sudo apt install php7.1 php7.1-cli php7.1-common php7.1-json php7.1-opcache \
      php7.1-sqlite3 php7.1-pgsql php7.1-intl php7.1-xmlrpc php7.1-xml \
      php7.1-gmp php7.1-bcmath
  
-sudo apt install php-pear git libdbd-mysql-perl libdbi-perl
+sudo apt install php-pear composer 
+sudo apt install git rsync htop mytop vim mc libdbd-mysql-perl libdbi-perl
 sudo apt install build-essential tcl
 sudo apt install supervisor
 sudo apt install beanstalkd
@@ -55,16 +56,19 @@ sudo systemctl enable postgresql.service
 sudo systemctl start postgresql.service
 
 sudo -u postgres psql
+CREATE USER laravel WITH NOSUPERUSER CREATEDB CREATEROLE LOGIN PASSWORD 'laravellaravel';
 \q
 
-sudo -u postgres createuser --interactive
 sudo -u postgres createdb laravel
 ```
 
 ### Laravel 
 
 ```bash
-adduser laravel --disable-password
+adduser --disabled-password laravel
+
+mkdir -p /var/www/laravel
+
 
 echo '* * * * * laravel php /var/www/laravel/artisan schedule:run >> /dev/null 2>&1' | sudo tee /etc/cron.d/laravel
 php artisan migrate
@@ -117,4 +121,10 @@ autostart=true
 autorestart=true
 stderr_logfile=/var/log/laravel-beans.err.log
 stdout_logfile=/var/log/laravel-beans.out.log
+```
+
+
+```bash
+supervisorctl reread
+supervisorctl update
 ```
