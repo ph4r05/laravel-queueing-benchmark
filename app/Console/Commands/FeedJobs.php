@@ -31,7 +31,7 @@ class FeedJobs extends Command
                                 {--window-strategy= : Optimistic windowing strategy}
                                 {--verify= : Verify correctness by job counting, slower}
                                 {--repeat=1 : Number of repeats for stats}
-                                {--no-json= : Disable the json dump}';
+                                {--no-json : Disable the json dump}';
 
     /**
      * The console command description.
