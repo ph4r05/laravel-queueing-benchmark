@@ -307,8 +307,8 @@ class FeederBatchJob implements ShouldQueue
 
         // Schedule batch now
         if (!$this->beans && !$this->redis) {
-            Log::info('Kickoff all ' . $this->batchSize . ' jobs in 3 seconds');
-            sleep(3);
+            Log::info('Kickoff all ' . $this->batchSize . ' jobs');
+            sleep(1);
             DB::table(Utils::getJobTable($this->optim))->update(['available_at' => 0]);
         }
 
