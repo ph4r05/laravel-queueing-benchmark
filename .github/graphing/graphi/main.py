@@ -72,6 +72,9 @@ class Graphs(object):
         parser.add_argument('--counts', dest='counts', default=False, action='store_const', const=True,
                             help='Job ordering analysis')
 
+        parser.add_argument('--duplicities', dest='duplicities', default=False, action='store_const', const=True,
+                            help='Job duplicity analysis')
+
         parser.add_argument('--avg', dest='avg', default=False, action='store_const', const=True,
                             help='Average jobs per second')
 
@@ -94,7 +97,7 @@ class Graphs(object):
             self.average()
             return
 
-        if self.args.counts:
+        if self.args.counts or self.args.duplicities:
             self.counts()
             return
 
@@ -108,11 +111,18 @@ class Graphs(object):
 
         for didx, dirname in enumerate(dirs):
             sub_rec = [f for f in os.listdir(dirname)]
-            for fname in sub_rec:
+            for fidx, fname in enumerate(sub_rec):
                 full_path = os.path.join(dirname, fname)
 
+                # dataset reset for each file.
+                # for aggregation among directories use a dist key for test (conn, delMark, ...)
+                datasets = []
+                datasets_dupl = []
                 if not os.path.isfile(full_path) or not fname.endswith('json'):
                     continue
+
+                # if 'run_1513508909_mysql_conn1_dm1_dtsx0_dretry1_batch10000_cl0_window1_verify1' not in fname:
+                #     continue
 
                 with open(full_path, 'r') as fh:
                     js = json.load(fh)
@@ -128,19 +138,12 @@ class Graphs(object):
                     #     continue
 
                     bins = collections.defaultdict(lambda: 0)
+                    bins_duplicities = collections.defaultdict(lambda: 0)
                     for x in js['runs']:
                         for counts in x['counts']:
                             bins[counts[0]] += counts[1]
-                        datasets.append({
-                            'env': dirname,
-                            'jps': x['jps'],
-                            'conn': sett['conn'],
-                            'db_conn': defvalkey(sett, 'db_conn'),
-                            'delTsxFetch': sett['delTsxFetch'],
-                            'delTsxRetry': sett['delTsxRetry'],
-                            'deleteMark': sett['deleteMark'],
-                            'windowStrategy': sett['windowStrategy'],
-                        })
+                        for dupl in x['duplicities']:
+                            bins_duplicities[dupl[0]] += dupl[1]
 
                     # binning 0,49, 50-100, 101-200, 200-1000, 1000-2000, 3000+
                     bin_merged = collections.defaultdict(lambda: 0)
@@ -151,17 +154,66 @@ class Graphs(object):
                         datasets.append({
                             'key': x[0],
                             'ord': x[1],
-                            'nums': y,
+                            'nums': y / float(len(js['runs'])),
+                            'env': dirname,
+                            'conn': sett['conn'],
+                            'db_conn': defvalkey(sett, 'db_conn'),
+                            'delTsxFetch': sett['delTsxFetch'],
+                            'delTsxRetry': sett['delTsxRetry'],
+                            'deleteMark': sett['deleteMark'],
+                            'windowStrategy': sett['windowStrategy'],
                         })
 
+                    for x, y in iteritems(bins_duplicities):
+                        datasets_dupl.append({
+                            'reruns': x,
+                            'counts': y / float(len(js['runs'])),
+                            'env': dirname,
+                        })
+
+                    if len(bins) == 0 and self.args.counts:
+                        continue
+                    if len(bins_duplicities) == 0 and self.args.duplicities:
+                        continue
+
                     sns.set_style("whitegrid")
-
                     datasets.sort(key=lambda x: x['ord'])
+                    datasets_dupl.sort(key=lambda x: x['reruns'])
                     data = pd.DataFrame(datasets)
+                    data_rerun = pd.DataFrame(datasets_dupl)
 
-                    ax = sns.barplot(y='nums', x='key', data=data, linewidth=0.5, orient='h', )
-                    plt.savefig('~/Desktop/%s.png' % fname)
+                    print(fname)
+                    if self.args.counts:
+                        print(bins)
+                        for x in datasets:
+                            print('  %s: %s' % (x['key'], x['nums']))
 
+                    elif self.args.duplicities:
+                        print(bins_duplicities)
+                        for x in datasets_dupl:
+                            print('  %s: %s' % (x['reruns'], x['counts']))
+                    print('-' * 80)
+
+                    if self.args.counts:
+                        fig, ax = plt.subplots(figsize=(11.7, 8.27))
+                        ax = sns.barplot(ax=ax, y='nums', x='key', hue='env', data=data, linewidth=0.5, errwidth=0)
+                        ax.set_xticklabels(ax.get_xticklabels(), rotation=-90)
+
+                    elif self.args.duplicities:
+                        fig, ax = plt.subplots(figsize=(11.7, 8.27))
+                        ax = sns.barplot(ax=ax, y='counts', x='reruns', hue='env', data=data_rerun, linewidth=0.5, errwidth=0)
+                        ax.set_xticklabels(ax.get_xticklabels(), rotation=-90)
+
+                    fprefix = 'counts' if self.args.counts else 'dupl'
+                    plt.savefig('/tmp/%s_%s.png' % (fprefix, fname))
+                    # plt.show()
+
+                    plt.cla()
+                    plt.clf()
+                    plt.close()
+
+                # if fidx > 2:
+                #     return
 
         # print(datasets)
 
@@ -173,7 +225,7 @@ class Graphs(object):
         :return:
         """
         val = int(val)
-        if 0 <= val <= 50:
+        if 0 <= val <= 49:
             return val, val
         elif val <= 100:
             return '50-99', 50
