@@ -307,8 +307,15 @@ class Graphs(object):
             return score
 
         sns.set_style("whitegrid")
-
         datasets.sort(key=sort_key)
+
+        print('Env, method avg: ')
+        avg_group_fnc = lambda x: (x['env'], x['method'])
+        for g, k in itertools.groupby(sorted(datasets, key=avg_group_fnc), avg_group_fnc):
+            k = list(k)
+            avg_jps = sum(x['jps'] for x in k) / float(len(k))
+            print('%s %s | %s' % (g[0], g[1], avg_jps))
+
         data = pd.DataFrame(datasets)
 
         ax = sns.boxplot(y='method', x='jps', hue='env', data=data, linewidth=0.5, orient='h',)
