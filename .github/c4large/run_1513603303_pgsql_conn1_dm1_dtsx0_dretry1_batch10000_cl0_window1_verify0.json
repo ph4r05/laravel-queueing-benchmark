@@ -1,0 +1,79 @@
+{
+    "timeStart": 1513602923,
+    "settings": {
+        "batchSize": 10000,
+        "db_conn": "pgsql",
+        "conn": "ph4DBOptim",
+        "delTsxFetch": false,
+        "delTsxRetry": 1,
+        "delMark": "true",
+        "deleteMark": true,
+        "workClone": "0",
+        "workMean": null,
+        "windowStrategy": 1,
+        "verify": false,
+        "repeat": 10,
+        "beans": false,
+        "redis": false,
+        "optim": true,
+        "numWorkers": 10,
+        "workerQueue": "default",
+        "workerConnection": "ph4DBOptim",
+        "stddev": 0.001,
+        "mean": 0,
+        "cloneProbab": 0
+    },
+    "runs": [
+        {
+            "elapsed": 49.051405906677246,
+            "jps": 203.86775496354784,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 49.558724880218506,
+            "jps": 201.78081708457205,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 18.02643394470215,
+            "jps": 554.7408894446888,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 19.525334119796753,
+            "jps": 512.1551282372675,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 18.531152963638306,
+            "jps": 539.631830767461,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 19.0240797996521,
+            "jps": 525.6496033086905,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 18.522114992141724,
+            "jps": 539.8951471925666,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 18.52318501472473,
+            "jps": 539.8639592516432,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 18.52238416671753,
+            "jps": 539.8873012238232,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 19.019197940826416,
+            "jps": 525.784527355599,
+            "numIds": 10000
+        }
+    ],
+    "jps_avg": 468.32569588298594
+}

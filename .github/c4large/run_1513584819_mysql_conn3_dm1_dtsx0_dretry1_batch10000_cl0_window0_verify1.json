@@ -1,0 +1,199 @@
+{
+    "timeStart": 1513584727,
+    "settings": {
+        "batchSize": 10000,
+        "db_conn": "mysql",
+        "conn": "redis",
+        "delTsxFetch": false,
+        "delTsxRetry": 1,
+        "delMark": "true",
+        "deleteMark": true,
+        "workClone": "0",
+        "workMean": null,
+        "windowStrategy": 0,
+        "verify": true,
+        "repeat": 10,
+        "beans": false,
+        "redis": true,
+        "optim": false,
+        "numWorkers": 10,
+        "workerQueue": "default",
+        "workerConnection": "redis",
+        "stddev": 0.001,
+        "mean": 0,
+        "cloneProbab": 0
+    },
+    "runs": [
+        {
+            "elapsed": 48.055290937423706,
+            "jps": 208.09363141764615,
+            "numIds": 0,
+            "diffs": {
+                "min": null,
+                "avg": null,
+                "max": null,
+                "med": null
+            },
+            "counts": [],
+            "topDiffs": [],
+            "protoEntries": 0,
+            "protoUnique": 0,
+            "duplicities": [],
+            "workload": []
+        },
+        {
+            "elapsed": 17.023982048034668,
+            "jps": 587.4066344633187,
+            "numIds": 0,
+            "diffs": {
+                "min": null,
+                "avg": null,
+                "max": null,
+                "med": null
+            },
+            "counts": [],
+            "topDiffs": [],
+            "protoEntries": 0,
+            "protoUnique": 0,
+            "duplicities": [],
+            "workload": []
+        },
+        {
+            "elapsed": 1.507972002029419,
+            "jps": 6631.4228556909975,
+            "numIds": 0,
+            "diffs": {
+                "min": null,
+                "avg": null,
+                "max": null,
+                "med": null
+            },
+            "counts": [],
+            "topDiffs": [],
+            "protoEntries": 0,
+            "protoUnique": 0,
+            "duplicities": [],
+            "workload": []
+        },
+        {
+            "elapsed": 0.5056099891662598,
+            "jps": 19778.090255870517,
+            "numIds": 0,
+            "diffs": {
+                "min": null,
+                "avg": null,
+                "max": null,
+                "med": null
+            },
+            "counts": [],
+            "topDiffs": [],
+            "protoEntries": 0,
+            "protoUnique": 0,
+            "duplicities": [],
+            "workload": []
+        },
+        {
+            "elapsed": 0.5037450790405273,
+            "jps": 19851.310545895136,
+            "numIds": 0,
+            "diffs": {
+                "min": null,
+                "avg": null,
+                "max": null,
+                "med": null
+            },
+            "counts": [],
+            "topDiffs": [],
+            "protoEntries": 0,
+            "protoUnique": 0,
+            "duplicities": [],
+            "workload": []
+        },
+        {
+            "elapsed": 0.5049700736999512,
+            "jps": 19803.153732911927,
+            "numIds": 0,
+            "diffs": {
+                "min": null,
+                "avg": null,
+                "max": null,
+                "med": null
+            },
+            "counts": [],
+            "topDiffs": [],
+            "protoEntries": 0,
+            "protoUnique": 0,
+            "duplicities": [],
+            "workload": []
+        },
+        {
+            "elapsed": 0.5054590702056885,
+            "jps": 19783.995558593222,
+            "numIds": 0,
+            "diffs": {
+                "min": null,
+                "avg": null,
+                "max": null,
+                "med": null
+            },
+            "counts": [],
+            "topDiffs": [],
+            "protoEntries": 0,
+            "protoUnique": 0,
+            "duplicities": [],
+            "workload": []
+        },
+        {
+            "elapsed": 1.0057671070098877,
+            "jps": 9942.65961801999,
+            "numIds": 0,
+            "diffs": {
+                "min": null,
+                "avg": null,
+                "max": null,
+                "med": null
+            },
+            "counts": [],
+            "topDiffs": [],
+            "protoEntries": 0,
+            "protoUnique": 0,
+            "duplicities": [],
+            "workload": []
+        },
+        {
+            "elapsed": 2.0078768730163574,
+            "jps": 4980.385069617032,
+            "numIds": 0,
+            "diffs": {
+                "min": null,
+                "avg": null,
+                "max": null,
+                "med": null
+            },
+            "counts": [],
+            "topDiffs": [],
+            "protoEntries": 0,
+            "protoUnique": 0,
+            "duplicities": [],
+            "workload": []
+        },
+        {
+            "elapsed": 0.5043768882751465,
+            "jps": 19826.44374169822,
+            "numIds": 0,
+            "diffs": {
+                "min": null,
+                "avg": null,
+                "max": null,
+                "med": null
+            },
+            "counts": [],
+            "topDiffs": [],
+            "protoEntries": 0,
+            "protoUnique": 0,
+            "duplicities": [],
+            "workload": []
+        }
+    ],
+    "jps_avg": 12139.2961644178
+}

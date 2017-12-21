@@ -1,0 +1,79 @@
+{
+    "timeStart": 1513549341,
+    "settings": {
+        "batchSize": 10000,
+        "db_conn": "pgsql",
+        "conn": "ph4DBOptim",
+        "delTsxFetch": false,
+        "delTsxRetry": 1,
+        "delMark": "true",
+        "deleteMark": true,
+        "workClone": "0",
+        "workMean": null,
+        "windowStrategy": 1,
+        "verify": false,
+        "repeat": 10,
+        "beans": false,
+        "redis": false,
+        "optim": true,
+        "numWorkers": 10,
+        "workerQueue": "default",
+        "workerConnection": "ph4DBOptim",
+        "stddev": 0.001,
+        "mean": 0,
+        "cloneProbab": 0
+    },
+    "runs": [
+        {
+            "elapsed": 45.05446910858154,
+            "jps": 221.95356416030427,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 83.59905982017517,
+            "jps": 119.61857013117599,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 44.049644947052,
+            "jps": 227.01658576408673,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 45.04880094528198,
+            "jps": 221.98149096457388,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 45.588581800460815,
+            "jps": 219.35317145353528,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 46.06557297706604,
+            "jps": 217.08185427278949,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 46.05188798904419,
+            "jps": 217.14636330173943,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 46.056792974472046,
+            "jps": 217.12323751118998,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 80.11531686782837,
+            "jps": 124.82007674634394,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 44.55044198036194,
+            "jps": 224.46466422057162,
+            "numIds": 10000
+        }
+    ],
+    "jps_avg": 201.05595785263108
+}

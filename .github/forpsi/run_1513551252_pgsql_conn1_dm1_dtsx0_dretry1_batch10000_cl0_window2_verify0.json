@@ -1,0 +1,79 @@
+{
+    "timeStart": 1513550594,
+    "settings": {
+        "batchSize": 10000,
+        "db_conn": "pgsql",
+        "conn": "ph4DBOptim",
+        "delTsxFetch": false,
+        "delTsxRetry": 1,
+        "delMark": "true",
+        "deleteMark": true,
+        "workClone": "0",
+        "workMean": null,
+        "windowStrategy": 2,
+        "verify": false,
+        "repeat": 10,
+        "beans": false,
+        "redis": false,
+        "optim": true,
+        "numWorkers": 10,
+        "workerQueue": "default",
+        "workerConnection": "ph4DBOptim",
+        "stddev": 0.001,
+        "mean": 0,
+        "cloneProbab": 0
+    },
+    "runs": [
+        {
+            "elapsed": 93.60174798965454,
+            "jps": 106.83561167153913,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 52.06524395942688,
+            "jps": 192.06670783666635,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 52.557125091552734,
+            "jps": 190.26915917832906,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 51.05046200752258,
+            "jps": 195.88461312115925,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 52.06554388999939,
+            "jps": 192.0656014105477,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 52.55766201019287,
+            "jps": 190.26721542637551,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 51.58082699775696,
+            "jps": 193.87048603223946,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 52.05985403060913,
+            "jps": 192.0865931379753,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 50.06241798400879,
+            "jps": 199.75063935573897,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 51.55972099304199,
+            "jps": 193.94984703950405,
+            "numIds": 10000
+        }
+    ],
+    "jps_avg": 184.70464742100748
+}

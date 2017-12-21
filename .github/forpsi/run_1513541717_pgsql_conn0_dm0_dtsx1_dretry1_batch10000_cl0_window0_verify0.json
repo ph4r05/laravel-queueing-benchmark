@@ -1,0 +1,79 @@
+{
+    "timeStart": 1513541044,
+    "settings": {
+        "batchSize": 10000,
+        "db_conn": "pgsql",
+        "conn": "ph4DBPess",
+        "delTsxFetch": true,
+        "delTsxRetry": 1,
+        "delMark": "false",
+        "deleteMark": false,
+        "workClone": "0",
+        "workMean": null,
+        "windowStrategy": 0,
+        "verify": false,
+        "repeat": 10,
+        "beans": false,
+        "redis": false,
+        "optim": false,
+        "numWorkers": 10,
+        "workerQueue": "default",
+        "workerConnection": "ph4DBPess",
+        "stddev": 0.001,
+        "mean": 0,
+        "cloneProbab": 0
+    },
+    "runs": [
+        {
+            "elapsed": 52.06383299827576,
+            "jps": 192.07191295983102,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 52.06542992591858,
+            "jps": 192.0660218157907,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 52.05315804481506,
+            "jps": 192.11130266852436,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 101.12240505218506,
+            "jps": 98.89005304847542,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 52.05879211425781,
+            "jps": 192.090511398193,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 51.05978798866272,
+            "jps": 195.84883513853197,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 52.571906089782715,
+            "jps": 190.21566353180958,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 52.564175844192505,
+            "jps": 190.2436372186522,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 50.554368019104004,
+            "jps": 197.8068442319583,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 52.57515001296997,
+            "jps": 190.2039270935615,
+            "numIds": 10000
+        }
+    ],
+    "jps_avg": 183.1548709105328
+}

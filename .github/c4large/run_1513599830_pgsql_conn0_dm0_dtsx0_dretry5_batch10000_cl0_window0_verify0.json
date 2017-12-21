@@ -1,0 +1,79 @@
+{
+    "timeStart": 1513599216,
+    "settings": {
+        "batchSize": 10000,
+        "db_conn": "pgsql",
+        "conn": "ph4DBPess",
+        "delTsxFetch": false,
+        "delTsxRetry": 5,
+        "delMark": "false",
+        "deleteMark": false,
+        "workClone": "0",
+        "workMean": null,
+        "windowStrategy": 0,
+        "verify": false,
+        "repeat": 10,
+        "beans": false,
+        "redis": false,
+        "optim": false,
+        "numWorkers": 10,
+        "workerQueue": "default",
+        "workerConnection": "ph4DBPess",
+        "stddev": 0.001,
+        "mean": 0,
+        "cloneProbab": 0
+    },
+    "runs": [
+        {
+            "elapsed": 24.032397031784058,
+            "jps": 416.10497641057174,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 71.58126211166382,
+            "jps": 139.70136464484816,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 24.52849316596985,
+            "jps": 407.68912840816995,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 75.60239791870117,
+            "jps": 132.27093683924514,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 24.53105592727661,
+            "jps": 407.6465370934475,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 68.57902383804321,
+            "jps": 145.81718199454227,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 25.030958890914917,
+            "jps": 399.50527039655435,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 70.08546900749207,
+            "jps": 142.682929023861,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 24.53133511543274,
+            "jps": 407.64189771754286,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 75.6046769618988,
+            "jps": 132.26694963645608,
+            "numIds": 10000
+        }
+    ],
+    "jps_avg": 273.13271721652393
+}

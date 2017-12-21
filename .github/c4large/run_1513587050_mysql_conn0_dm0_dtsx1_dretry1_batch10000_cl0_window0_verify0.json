@@ -1,0 +1,79 @@
+{
+    "timeStart": 1513586497,
+    "settings": {
+        "batchSize": 10000,
+        "db_conn": "mysql",
+        "conn": "ph4DBPess",
+        "delTsxFetch": true,
+        "delTsxRetry": 1,
+        "delMark": "false",
+        "deleteMark": false,
+        "workClone": "0",
+        "workMean": null,
+        "windowStrategy": 0,
+        "verify": false,
+        "repeat": 10,
+        "beans": false,
+        "redis": false,
+        "optim": false,
+        "numWorkers": 10,
+        "workerQueue": "default",
+        "workerConnection": "ph4DBPess",
+        "stddev": 0.001,
+        "mean": 0,
+        "cloneProbab": 0
+    },
+    "runs": [
+        {
+            "elapsed": 41.05208992958069,
+            "jps": 243.59295756083668,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 42.050199031829834,
+            "jps": 237.8110028071571,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 41.55365610122681,
+            "jps": 240.65271117514894,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 45.05424213409424,
+            "jps": 221.95468231908453,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 33.542896032333374,
+            "jps": 298.12571908998524,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 49.05957317352295,
+            "jps": 203.8338157698632,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 38.547133922576904,
+            "jps": 259.42265954416496,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 41.04924201965332,
+            "jps": 243.60985752702223,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 34.54486012458801,
+            "jps": 289.478665246709,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 36.544074058532715,
+            "jps": 273.6421774973141,
+            "numIds": 10000
+        }
+    ],
+    "jps_avg": 251.21242485372858
+}

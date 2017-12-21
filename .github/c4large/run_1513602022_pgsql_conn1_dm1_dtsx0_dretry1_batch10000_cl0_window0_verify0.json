@@ -1,0 +1,79 @@
+{
+    "timeStart": 1513601315,
+    "settings": {
+        "batchSize": 10000,
+        "db_conn": "pgsql",
+        "conn": "ph4DBOptim",
+        "delTsxFetch": false,
+        "delTsxRetry": 1,
+        "delMark": "true",
+        "deleteMark": true,
+        "workClone": "0",
+        "workMean": null,
+        "windowStrategy": 0,
+        "verify": false,
+        "repeat": 10,
+        "beans": false,
+        "redis": false,
+        "optim": true,
+        "numWorkers": 10,
+        "workerQueue": "default",
+        "workerConnection": "ph4DBOptim",
+        "stddev": 0.001,
+        "mean": 0,
+        "cloneProbab": 0
+    },
+    "runs": [
+        {
+            "elapsed": 52.06433701515198,
+            "jps": 192.07005357793682,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 52.56360983848572,
+            "jps": 190.24568576487414,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 52.56771898269653,
+            "jps": 190.23081452881098,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 53.06537699699402,
+            "jps": 188.44679084380135,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 54.57067084312439,
+            "jps": 183.2486177189802,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 52.55934000015259,
+            "jps": 190.26114102595216,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 52.56666898727417,
+            "jps": 190.23461430323638,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 52.562649965286255,
+            "jps": 190.24915993779348,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 101.12606596946716,
+            "jps": 98.88647307825941,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 52.562341928482056,
+            "jps": 190.25027487561928,
+            "numIds": 10000
+        }
+    ],
+    "jps_avg": 180.41236256552642
+}

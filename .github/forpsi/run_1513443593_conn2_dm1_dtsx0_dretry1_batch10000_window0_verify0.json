@@ -1,0 +1,77 @@
+{
+    "timeStart": 1513443479,
+    "settings": {
+        "batchSize": 10000,
+        "conn": "beanstalkd",
+        "delTsxFetch": false,
+        "delTsxRetry": 1,
+        "delMark": "true",
+        "workClone": "0",
+        "workMean": null,
+        "windowStrategy": 0,
+        "verify": false,
+        "repeat": 10,
+        "beans": true,
+        "optim": false,
+        "numWorkers": 10,
+        "workerQueue": "default",
+        "workerConnection": "beanstalkd",
+        "stddev": 0.001,
+        "mean": 0,
+        "cloneProbab": 0,
+        "deleteMark": true
+    },
+    "runs": [
+        {
+            "elapsed": 8.511620998382568,
+            "jps": 1174.86434157492,
+            "numIds": 0
+        },
+        {
+            "elapsed": 9.013119220733643,
+            "jps": 1109.493811753444,
+            "numIds": 0
+        },
+        {
+            "elapsed": 9.515530824661255,
+            "jps": 1050.913520671191,
+            "numIds": 0
+        },
+        {
+            "elapsed": 9.01557183265686,
+            "jps": 1109.1919831171742,
+            "numIds": 0
+        },
+        {
+            "elapsed": 9.012192010879517,
+            "jps": 1109.6079608521436,
+            "numIds": 0
+        },
+        {
+            "elapsed": 9.01405119895935,
+            "jps": 1109.3790992838465,
+            "numIds": 0
+        },
+        {
+            "elapsed": 9.013828039169312,
+            "jps": 1109.4065647298028,
+            "numIds": 0
+        },
+        {
+            "elapsed": 9.02789306640625,
+            "jps": 1107.6781621628932,
+            "numIds": 0
+        },
+        {
+            "elapsed": 9.015435934066772,
+            "jps": 1109.2087030659093,
+            "numIds": 0
+        },
+        {
+            "elapsed": 9.020925045013428,
+            "jps": 1108.5337645641766,
+            "numIds": 0
+        }
+    ],
+    "jps_avg": 1109.8277911775501
+}

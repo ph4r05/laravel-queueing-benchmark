@@ -1,0 +1,79 @@
+{
+    "timeStart": 1513584819,
+    "settings": {
+        "batchSize": 10000,
+        "db_conn": "mysql",
+        "conn": "ph4DBPess",
+        "delTsxFetch": false,
+        "delTsxRetry": 5,
+        "delMark": "false",
+        "deleteMark": false,
+        "workClone": "0",
+        "workMean": null,
+        "windowStrategy": 0,
+        "verify": false,
+        "repeat": 10,
+        "beans": false,
+        "redis": false,
+        "optim": false,
+        "numWorkers": 10,
+        "workerQueue": "default",
+        "workerConnection": "ph4DBPess",
+        "stddev": 0.001,
+        "mean": 0,
+        "cloneProbab": 0
+    },
+    "runs": [
+        {
+            "elapsed": 22.531183004379272,
+            "jps": 443.8293363493763,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 21.5331449508667,
+            "jps": 464.4003475951851,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 22.02453088760376,
+            "jps": 454.03918253842943,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 22.53330397605896,
+            "jps": 443.7875604316498,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 22.530394077301025,
+            "jps": 443.8448775325605,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 22.52667999267578,
+            "jps": 443.9180564224889,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 21.531126022338867,
+            "jps": 464.443893441748,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 22.536222219467163,
+            "jps": 443.73009382920594,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 22.03081488609314,
+            "jps": 453.9096738683261,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 21.528738975524902,
+            "jps": 464.49538969135955,
+            "numIds": 10000
+        }
+    ],
+    "jps_avg": 452.039841170033
+}

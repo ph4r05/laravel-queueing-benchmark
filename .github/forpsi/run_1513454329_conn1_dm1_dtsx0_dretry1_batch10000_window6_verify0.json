@@ -1,0 +1,77 @@
+{
+    "timeStart": 1513453592,
+    "settings": {
+        "batchSize": 10000,
+        "conn": "ph4DBOptim",
+        "delTsxFetch": false,
+        "delTsxRetry": 1,
+        "delMark": "true",
+        "workClone": "0",
+        "workMean": null,
+        "windowStrategy": 6,
+        "verify": false,
+        "repeat": 10,
+        "beans": false,
+        "optim": true,
+        "numWorkers": 10,
+        "workerQueue": "default",
+        "workerConnection": "ph4DBOptim",
+        "stddev": 0.001,
+        "mean": 0,
+        "cloneProbab": 0,
+        "deleteMark": true
+    },
+    "runs": [
+        {
+            "elapsed": 60.666751861572266,
+            "jps": 164.83493335555076,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 60.570992946624756,
+            "jps": 165.09552697628737,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 62.07836604118347,
+            "jps": 161.08671406341284,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 60.577073097229004,
+            "jps": 165.07895625708983,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 62.081209897994995,
+            "jps": 161.07933489748183,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 62.06982183456421,
+            "jps": 161.10888841687313,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 60.06668186187744,
+            "jps": 166.48164489916175,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 61.57814812660217,
+            "jps": 162.39527014421424,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 59.564895153045654,
+            "jps": 167.88411990495518,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 61.07187795639038,
+            "jps": 163.74148519128073,
+            "numIds": 10000
+        }
+    ],
+    "jps_avg": 163.8786874106308
+}

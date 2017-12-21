@@ -1,0 +1,78 @@
+{
+    "timeStart": 1513507259,
+    "settings": {
+        "batchSize": 10000,
+        "db_conn": "mysql",
+        "conn": "ph4DBOptim",
+        "delTsxFetch": false,
+        "delTsxRetry": 1,
+        "delMark": "true",
+        "deleteMark": true,
+        "workClone": "0",
+        "workMean": null,
+        "windowStrategy": 0,
+        "verify": false,
+        "repeat": 10,
+        "beans": false,
+        "optim": true,
+        "numWorkers": 10,
+        "workerQueue": "default",
+        "workerConnection": "ph4DBOptim",
+        "stddev": 0.001,
+        "mean": 0,
+        "cloneProbab": 0
+    },
+    "runs": [
+        {
+            "elapsed": 25.53623104095459,
+            "jps": 391.6004669585799,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 25.530894994735718,
+            "jps": 391.6823128238131,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 26.032652854919434,
+            "jps": 384.13296008402324,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 26.533572912216187,
+            "jps": 376.8810191180831,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 25.541871070861816,
+            "jps": 391.5139956762215,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 25.52960515022278,
+            "jps": 391.70210197758337,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 26.533284187316895,
+            "jps": 376.88512019104195,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 26.036097049713135,
+            "jps": 384.08214491235276,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 25.53654909133911,
+            "jps": 391.5955896872364,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 26.034383058547974,
+            "jps": 384.107431219372,
+            "numIds": 10000
+        }
+    ],
+    "jps_avg": 386.4183142648307
+}
