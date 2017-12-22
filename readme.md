@@ -6,6 +6,8 @@ Project for benchmarking and testing Laravel queueing system.
 ## Installation
 
 ```bash
+sudo apt-get update -y
+
 sudo apt-get install -y python-software-properties
 sudo add-apt-repository -y ppa:ondrej/php
 sudo apt-get update -y
@@ -65,9 +67,9 @@ sudo -u postgres createdb laravel
 ### Laravel 
 
 ```bash
-adduser --disabled-password laravel
+sudo adduser --disabled-password laravel
 
-mkdir -p /var/www/laravel
+sudo mkdir -p /var/www/laravel
 
 
 echo '* * * * * laravel php /var/www/laravel/artisan schedule:run >> /dev/null 2>&1' | sudo tee /etc/cron.d/laravel
