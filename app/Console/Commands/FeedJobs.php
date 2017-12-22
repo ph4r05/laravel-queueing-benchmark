@@ -31,6 +31,7 @@ class FeedJobs extends Command
                                 {--window-strategy= : Optimistic windowing strategy}
                                 {--verify= : Verify correctness by job counting, slower}
                                 {--repeat=1 : Number of repeats for stats}
+                                {--key=: key to identify the test}
                                 {--no-json : Disable the json dump}';
 
     /**
@@ -95,6 +96,7 @@ class FeedJobs extends Command
         $job->verify = $this->option('verify');
         $job->repeat = $this->option('repeat');
         $job->noJson = $this->option('no-json');
+        $job->key = $this->option('key');
 
         $job->onConnection('sync')
             ->onQueue(null);

@@ -90,6 +90,12 @@ class FeederBatchJob implements ShouldQueue
     public $noJson;
 
     /**
+     * Test identification
+     * @var
+     */
+    public $key;
+
+    /**
      * @var boolean
      */
     protected $beans = false;
@@ -191,7 +197,7 @@ class FeederBatchJob implements ShouldQueue
             return;
         }
 
-        $fname = sprintf('run_%s_%s_conn%d_dm%d_dtsx%d_dretry%d_batch%d_cl%s_window%d_verify%d.json',
+        $fname = sprintf('run_%s_%s_conn%d_dm%d_dtsx%d_dretry%d_batch%d_cl%s_window%d_verify%d%s.json',
             time(),
             env('DB_CONNECTION'),
             $this->connIdx(),
@@ -201,7 +207,8 @@ class FeederBatchJob implements ShouldQueue
             $this->batchSize,
             $this->cloneProbab,
             $this->windowStrategy,
-            $this->verify
+            $this->verify,
+            $this->key ? '_' . $this->key : ''
         );
 
         $this->runsDisk->put($fname, json_encode([
@@ -228,6 +235,7 @@ class FeederBatchJob implements ShouldQueue
                 'stddev' => $this->stddev,
                 'mean' => $this->mean,
                 'cloneProbab' => $this->cloneProbab,
+                'key' => $this->key
             ],
             'runs' => $this->testResults,
             'jps_avg' => $jpsAvg,
