@@ -21,8 +21,7 @@
         "workerConnection": "ph4DBPess",
         "stddev": 0.001,
         "mean": 0,
-        "cloneProbab": 0,
-        "key": ": key to identify the test"
+        "cloneProbab": 0
     },
     "runs": [
         {
