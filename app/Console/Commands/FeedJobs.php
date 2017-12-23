@@ -82,6 +82,8 @@ class FeedJobs extends Command
             $job->conn = 'beanstalkd';
         } elseif ($conn === 3 || $conn === '3'){
             $job->conn = 'redis';
+        } elseif ($conn === 4 || $conn === '4'){
+            $job->conn = 'database_ph4';
         } else {
             $job->conn = $conn;
         }

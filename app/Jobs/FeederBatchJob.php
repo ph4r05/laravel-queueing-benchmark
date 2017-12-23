@@ -255,6 +255,8 @@ class FeederBatchJob implements ShouldQueue
             return 2;
         } else if (Str::contains($this->conn, 'redis')){
             return 3;
+        }  else if (Str::contains($this->conn, 'database_ph4')){
+            return 4;
         } else {
             return $this->conn;
         }
