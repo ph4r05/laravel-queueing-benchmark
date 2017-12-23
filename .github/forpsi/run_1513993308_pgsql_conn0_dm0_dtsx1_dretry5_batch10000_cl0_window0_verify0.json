@@ -1,0 +1,79 @@
+{
+    "timeStart": 1513992653,
+    "settings": {
+        "batchSize": 10000,
+        "db_conn": "pgsql",
+        "conn": "ph4DBPess",
+        "delTsxFetch": true,
+        "delTsxRetry": 5,
+        "delMark": "false",
+        "deleteMark": false,
+        "workClone": "0",
+        "workMean": null,
+        "windowStrategy": 0,
+        "verify": false,
+        "repeat": 10,
+        "beans": false,
+        "redis": false,
+        "optim": false,
+        "numWorkers": 10,
+        "workerQueue": "default",
+        "workerConnection": "ph4DBPess",
+        "stddev": 0.001,
+        "mean": 0,
+        "cloneProbab": 0
+    },
+    "runs": [
+        {
+            "elapsed": 54.56460213661194,
+            "jps": 183.26899873590696,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 53.562199115753174,
+            "jps": 186.69883173371986,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 53.06356406211853,
+            "jps": 188.453229193078,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 54.56870794296265,
+            "jps": 183.25520938579658,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 54.056989908218384,
+            "jps": 184.9899525848309,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 55.07120990753174,
+            "jps": 181.58308155551097,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 55.05846810340881,
+            "jps": 181.6251040842321,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 55.561352014541626,
+            "jps": 179.9812214321707,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 54.56322908401489,
+            "jps": 183.2736105959251,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 56.07551407814026,
+            "jps": 178.3309553982006,
+            "numIds": 10000
+        }
+    ],
+    "jps_avg": 183.1460194699372
+}
