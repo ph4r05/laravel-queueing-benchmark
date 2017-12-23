@@ -78,6 +78,13 @@ return [
             'retry_after' => 4,
         ],
 
+        'database_ph4' => [
+            'driver' => 'database_ph4',
+            'table' => 'jobs_ph4',
+            'queue' => 'default',
+            'retry_after' => 4,
+        ],
+
     ],
 
     /*
