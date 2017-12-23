@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec6792658ae5ebf6d02ccef885013ddf",
+    "content-hash": "59d7ce7eb9259f1a9c82cc417a50295e",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1123,6 +1123,63 @@
                 "beanstalkd"
             ],
             "time": "2015-08-07T21:42:41+00:00"
+        },
+        {
+            "name": "ph4r05/laravel-queue-database-ph4",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "/Users/dusanklinec/workspace/laravel-queue-database-ph4",
+                "reference": "6ba9bd162166dc0f8bb368b216016fee5ee50980",
+                "shasum": null
+            },
+            "require": {
+                "illuminate/database": "5.5.*",
+                "illuminate/queue": "5.5.*",
+                "illuminate/support": "5.5.*",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "illuminate/events": "5.5.*",
+                "mockery/mockery": "~1.0",
+                "phpunit/phpunit": "~6.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "ph4r05\\LaravelDatabasePh4\\LaravelQueuePh4ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ph4r05\\LaravelDatabasePh4\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "ph4r05\\LaravelDatabasePh4\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "vendor/bin/phpunit"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ph4r05",
+                    "email": "ph4r05@gmail.com"
+                }
+            ],
+            "description": "Laravel Database queue driver with optimistic locking"
         },
         {
             "name": "predis/predis",
@@ -4124,7 +4181,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "ph4r05/laravel-queue-database-ph4": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
