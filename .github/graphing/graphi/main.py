@@ -152,9 +152,9 @@ class Graphs(object):
 
                     for x, y in iteritems(bin_merged):
                         datasets.append({
-                            'key': x[0],
+                            'diff': x[0],
                             'ord': x[1],
-                            'nums': y / float(len(js['runs'])),
+                            'count': y / float(len(js['runs'])),
                             'env': dirname,
                             'conn': sett['conn'],
                             'db_conn': defvalkey(sett, 'db_conn'),
@@ -186,7 +186,7 @@ class Graphs(object):
                     if self.args.counts:
                         print(bins)
                         for x in datasets:
-                            print('  %s: %s' % (x['key'], x['nums']))
+                            print('  %s: %s' % (x['diff'], x['count']))
 
                     elif self.args.duplicities:
                         print(bins_duplicities)
@@ -196,7 +196,7 @@ class Graphs(object):
 
                     if self.args.counts:
                         fig, ax = plt.subplots(figsize=(11.7, 8.27))
-                        ax = sns.barplot(ax=ax, y='nums', x='key', hue='env', data=data, linewidth=0.5, errwidth=0)
+                        ax = sns.barplot(ax=ax, y='count', x='diff', hue='env', data=data, linewidth=0.5, errwidth=0)
                         ax.set_xticklabels(ax.get_xticklabels(), rotation=-90)
 
                     elif self.args.duplicities:
@@ -337,11 +337,13 @@ class Graphs(object):
 
         if con == 'ph4DBPess':
             params = (sett['deleteMark'], sett['delTsxFetch'], sett['delTsxRetry'])
-            if params not in [(False, False, 5)]:
+            if params not in [(False, False, 5), (False, True, 5), (False, True, 1), (True, False, 1)]:
                 return None, None
+
+            suffix = sett['key'] if 'key' in sett else '%d-%d-%s' % (int(sett['deleteMark']), int(sett['delTsxFetch']), int(sett['delTsxRetry']))
             return '%s_%s_%s_%s_%s' % (con, sett['db_conn'], sett['deleteMark'], sett['delTsxFetch'], sett['delTsxRetry']),\
                    'DB-%s' % (sett['db_conn']) if classic_only else \
-                   'DBP-%s-%d-%d-%s' % (sett['db_conn'], int(sett['deleteMark']), int(sett['delTsxFetch']), int(sett['delTsxRetry']))
+                   'DBP-%s-%s' % (sett['db_conn'], suffix)
 
         if con == 'ph4DBOptim':
             if classic_only:
