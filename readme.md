@@ -19,7 +19,7 @@ sudo apt install php7.1 php7.1-cli php7.1-common php7.1-json php7.1-opcache \
      php7.1-sqlite3 php7.1-pgsql php7.1-intl php7.1-xmlrpc php7.1-xml \
      php7.1-gmp php7.1-bcmath
  
-sudo apt install php-pear composer \ 
+sudo apt install php-pear composer \
     git rsync htop mytop vim mc libdbd-mysql-perl libdbi-perl \
     build-essential tcl \
     supervisor \
