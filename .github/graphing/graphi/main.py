@@ -192,6 +192,21 @@ class Graphs(object):
                         print(bins_duplicities)
                         for x in datasets_dupl:
                             print('  %s: %s' % (x['reruns'], x['counts']))
+
+                        runs = js['runs']
+                        ents = [x['protoEntries'] for x in runs]
+                        uniq = [x['protoUnique'] for x in runs]
+
+                        print('ProtoData: max(protoEntries): %s, '
+                              'min(protoEntries): %s, '
+                              'avg(protoEntries): %s, '
+                              'max(protoUnique): %s, '
+                              'min(protoUnique): %s,'
+                              'avg(protoUnique): %s,' % (
+                            max(ents), min(ents), sum(ents)/float(len(ents)),
+                            max(uniq), min(uniq), sum(uniq)/float(len(uniq)),
+                        ))
+
                     print('-' * 80)
 
                     if self.args.counts:
@@ -205,7 +220,7 @@ class Graphs(object):
                         ax.set_xticklabels(ax.get_xticklabels(), rotation=-90)
 
                     fprefix = 'counts' if self.args.counts else 'dupl'
-                    plt.savefig('/tmp/%s_%s.png' % (fprefix, fname))
+                    plt.savefig('/tmp/%s_%s.svg' % (fprefix, fname), transparent=True)
                     # plt.show()
 
                     plt.cla()
@@ -228,15 +243,13 @@ class Graphs(object):
         if 0 <= val <= 49:
             return val, val
         elif val <= 100:
-            return '50-99', 50
+            return '%d-%d' % (int((val//10)*10), int((val//10)*10)+9), ((val//10)*10)
         elif val <= 200:
             return '100-199', 100
         elif val <= 1000:
             return '200-999', 200
-        elif val <= 2000:
-            return '1000-1999', 1000
-        else:
-            return '3000+', 3000
+        elif val > 1000:
+            return '%d-%d' % (int((val // 1000) * 1000), int((val // 1000) * 1000) + 999), ((val // 1000) * 1000)
 
     def average(self):
         """
@@ -297,7 +310,9 @@ class Graphs(object):
                 return 2
 
             score = 100
-            if '_mysql' in x['key']:
+            if 'sqlite' in x['key']:
+                score += 200
+            elif '_mysql' in x['key']:
                 score += 300
             elif '_pgsql' in x['key']:
                 score += 400
@@ -340,7 +355,7 @@ class Graphs(object):
             if params not in [(False, False, 5), (False, True, 5), (False, True, 1), (True, False, 1)]:
                 return None, None
 
-            suffix = sett['key'] if 'key' in sett else '%d-%d-%s' % (int(sett['deleteMark']), int(sett['delTsxFetch']), int(sett['delTsxRetry']))
+            suffix = defvalkey(sett, 'key', '%d-%d-%s' % (int(sett['deleteMark']), int(sett['delTsxFetch']), int(sett['delTsxRetry'])), False)
             return '%s_%s_%s_%s_%s' % (con, sett['db_conn'], sett['deleteMark'], sett['delTsxFetch'], sett['delTsxRetry']),\
                    'DB-%s' % (sett['db_conn']) if classic_only else \
                    'DBP-%s-%s' % (sett['db_conn'], suffix)
