@@ -1,0 +1,80 @@
+{
+    "timeStart": 1514127993,
+    "settings": {
+        "batchSize": 10000,
+        "db_conn": "sqlite",
+        "conn": "ph4DBPess",
+        "delTsxFetch": false,
+        "delTsxRetry": 5,
+        "delMark": "false",
+        "deleteMark": false,
+        "workClone": "0",
+        "workMean": null,
+        "windowStrategy": 0,
+        "verify": false,
+        "repeat": 10,
+        "beans": false,
+        "redis": false,
+        "optim": false,
+        "numWorkers": 10,
+        "workerQueue": "default",
+        "workerConnection": "ph4DBPess",
+        "stddev": 0.001,
+        "mean": 0,
+        "cloneProbab": 0,
+        "key": null
+    },
+    "runs": [
+        {
+            "elapsed": 37.27370095252991,
+            "jps": 268.28567446885796,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 36.77434301376343,
+            "jps": 271.9287193317724,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 37.20877408981323,
+            "jps": 268.75381531953593,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 39.11076998710632,
+            "jps": 255.6840482377797,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 40.540618896484375,
+            "jps": 246.66618991520096,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 38.044772148132324,
+            "jps": 262.84820319237775,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 38.20823788642883,
+            "jps": 261.723663617366,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 38.04495716094971,
+            "jps": 262.8469249602481,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 36.90001606941223,
+            "jps": 271.00259200942094,
+            "numIds": 10000
+        },
+        {
+            "elapsed": 42.217889070510864,
+            "jps": 236.86641421835054,
+            "numIds": 10000
+        }
+    ],
+    "jps_avg": 260.66062452709104
+}
