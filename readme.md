@@ -43,6 +43,8 @@ sudo systemctl start beanstalkd.service
 mysql_secure_installation
 sudo systemctl enable mysql.service
 sudo systemctl start mysql.service
+
+mysql -uroot -prootroot
 ```
 
 ```sql
@@ -73,6 +75,11 @@ sudo mkdir -p /var/www/laravel
 
 
 echo '* * * * * laravel php /var/www/laravel/artisan schedule:run >> /dev/null 2>&1' | sudo tee /etc/cron.d/laravel
+
+cd /var/www/laravel
+./fix.sh
+sudo -u laravel bash
+composer install 
 php artisan migrate
 ```
 
@@ -103,6 +110,6 @@ stdout_logfile=/var/log/laravel.out.log
 Reconfigure supervisord:
 
 ```bash
-supervisorctl reread
-supervisorctl update
+sudo supervisorctl reread
+sudo supervisorctl update
 ```
