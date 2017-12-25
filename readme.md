@@ -19,7 +19,7 @@ sudo apt install php7.1 php7.1-cli php7.1-common php7.1-json php7.1-opcache \
      php7.1-gmp php7.1-bcmath
  
 sudo apt install php-pear composer \
-    git rsync htop mytop vim mc libdbd-mysql-perl libdbi-perl \
+    git rsync htop mytop vim mc libdbd-mysql-perl libdbi-perl sqlite3 \
     build-essential tcl \
     supervisor \
     beanstalkd \
