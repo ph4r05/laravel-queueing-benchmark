@@ -17,7 +17,9 @@ import collections
 import argparse
 import socket
 import seaborn as sns
+import matplotlib as mpl
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 import pandas as pd
 
 
@@ -321,7 +323,9 @@ class Graphs(object):
                 score += x['windowStrategy']
             return score
 
-        sns.set_style("whitegrid")
+        # sns.set()
+        # sns.set_style("whitegrid")
+        # sns.set_style("darkgrid")
         datasets.sort(key=sort_key)
 
         print('Env, method avg: ')
@@ -333,7 +337,36 @@ class Graphs(object):
 
         data = pd.DataFrame(datasets)
 
-        ax = sns.boxplot(y='method', x='jps', hue='env', data=data, linewidth=0.5, orient='h',)
+        # g = sns.FacetGrid(data, row='method', sharey=True, size=2)
+        # g.map(sns.boxplot, 'jps', 'env', orient='h',)
+
+        sns.axes_style({
+            'axes.grid': True,
+            'grid.color': '.8',
+            'grid.linestyle': '--',
+
+        })
+
+        sns.set_style("whitegrid", {
+            'xtick.major.size': 4.0,
+            'ytick.major.size': 4.0,
+            'grid.linestyle': '--',
+        })
+
+        ax = sns.boxplot(y='method', x='jps', hue='env', data=data, linewidth=0.5, orient='h',
+                         fliersize=0.5)
+
+        ax.get_xaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
+        ax.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator(2))
+        # ax.grid(b=True, which='major', color='black', axis='x', alpha=0.2, linewidth=0.5, linestyle='--')
+        ax.grid(b=True, which='minor', color='black', axis='x', alpha=0.2, linewidth=0.5, linestyle='--')
+        ax.grid(b=True, which='minor', color='black', axis='y', alpha=0.2, linewidth=0.5, linestyle='--')
+        # ax.set_yticks([-1.25, -0.75, -0.25, 0.24, 0.75, 1.25], minor=True)
+
+        # ax.yaxis.set_major_locator(ticker.MultipleLocator(1.))
+        # ax = sns.factorplot(y='method', x='jps', hue='env', row='key',
+        #                     data=data, linewidth=0.5, orient='h', kind='box')
+
         # ax.set_xticklabels(ax.get_xticklabels(), rotation=-30)
         plt.show()
 
@@ -352,7 +385,8 @@ class Graphs(object):
 
         if con == 'ph4DBPess':
             params = (sett['deleteMark'], sett['delTsxFetch'], sett['delTsxRetry'])
-            if params not in [(False, False, 5), (False, True, 5), (False, True, 1), (True, False, 1)]:
+            # if params not in [(False, False, 5), (False, True, 5), (False, True, 1), (True, False, 1)]:
+            if params not in [(False, False, 5), (True, False, 1)]:
                 return None, None
 
             suffix = defvalkey(sett, 'key', '%d-%d-%s' % (int(sett['deleteMark']), int(sett['delTsxFetch']), int(sett['delTsxRetry'])), False)
