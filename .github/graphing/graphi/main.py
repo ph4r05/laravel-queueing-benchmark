@@ -354,7 +354,7 @@ class Graphs(object):
         })
 
         ax = sns.boxplot(y='method', x='jps', hue='env', data=data, linewidth=0.5, orient='h',
-                         fliersize=0.5)
+                         fliersize=0.65)
 
         ax.get_xaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
         ax.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator(2))
@@ -368,6 +368,11 @@ class Graphs(object):
         #                     data=data, linewidth=0.5, orient='h', kind='box')
 
         # ax.set_xticklabels(ax.get_xticklabels(), rotation=-30)
+        # plt.gcf().subplots_adjust(bottom=0.15)
+        
+        plt.ylabel('')
+        plt.tight_layout()
+        plt.savefig('/tmp/avg.svg', transparent=True)
         plt.show()
 
     @staticmethod
