@@ -369,8 +369,9 @@ class Graphs(object):
 
         # ax.set_xticklabels(ax.get_xticklabels(), rotation=-30)
         # plt.gcf().subplots_adjust(bottom=0.15)
-        
+
         plt.ylabel('')
+        plt.legend(loc=4)
         plt.tight_layout()
         plt.savefig('/tmp/avg.svg', transparent=True)
         plt.show()
@@ -387,11 +388,17 @@ class Graphs(object):
 
         if 'db_conn' not in sett:
             return None, None
+        if 'sqlite' in sett['db_conn']:
+            return None, None
+        if classic_only and len(defvalkey(sett, 'key', '', take_none=True)) > 0:
+            return None, None
 
         if con == 'ph4DBPess':
             params = (sett['deleteMark'], sett['delTsxFetch'], sett['delTsxRetry'])
             # if params not in [(False, False, 5), (False, True, 5), (False, True, 1), (True, False, 1)]:
-            if params not in [(False, False, 5), (True, False, 1)]:
+            if classic_only and params not in [(False, False, 5)]:
+                return None, None
+            elif not classic_only and params not in [(False, False, 5), (True, False, 1)]:
                 return None, None
 
             suffix = defvalkey(sett, 'key', '%d-%d-%s' % (int(sett['deleteMark']), int(sett['delTsxFetch']), int(sett['delTsxRetry'])), False)
