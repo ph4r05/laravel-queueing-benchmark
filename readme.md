@@ -6,10 +6,9 @@ Project for benchmarking and testing Laravel queueing system.
 ## Installation
 
 ```bash
-sudo apt-get update -y
-
-sudo apt-get install -y python-software-properties
-sudo add-apt-repository -y ppa:ondrej/php
+sudo apt-get update -y ;\
+sudo apt-get install -y python-software-properties ;\
+sudo add-apt-repository -y ppa:ondrej/php ;\
 sudo apt-get update -y
 
 apt-cache pkgnames | grep php7.1
@@ -28,12 +27,12 @@ sudo apt install php-pear composer \
     mysql-server \
     postgresql postgresql-contrib
 
-sudo systemctl enable supervisor.service
-sudo systemctl enable redis.service
-sudo systemctl enable beanstalkd.service
-
-sudo systemctl start supervisor.service
-sudo systemctl start redis.service
+sudo systemctl enable supervisor.service ;\
+sudo systemctl enable redis.service ;\
+sudo systemctl enable beanstalkd.service ;\
+\
+sudo systemctl start supervisor.service ;\
+sudo systemctl start redis.service ;\
 sudo systemctl start beanstalkd.service
 ```
 
@@ -73,14 +72,14 @@ sudo adduser --disabled-password laravel
 
 sudo mkdir -p /var/www/laravel
 
-
 echo '* * * * * laravel php /var/www/laravel/artisan schedule:run >> /dev/null 2>&1' | sudo tee /etc/cron.d/laravel
 
-cd /var/www/laravel
-./fix.sh
-sudo -u laravel bash
-composer install 
-php artisan migrate
+# sync the project files to the server
+cd /var/www/laravel ;\
+./fix.sh  ;\
+sudo -u laravel bash ;\ 
+composer install  ;\
+php artisan migrate:fresh
 ```
 
 Beanstalkd Console:
@@ -110,6 +109,6 @@ stdout_logfile=/var/log/laravel.out.log
 Reconfigure supervisord:
 
 ```bash
-sudo supervisorctl reread
+sudo supervisorctl reread \;
 sudo supervisorctl update
 ```
